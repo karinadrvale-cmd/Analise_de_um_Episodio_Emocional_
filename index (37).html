@@ -1,0 +1,1841 @@
+<!DOCTYPE html>
+<html lang="pt-BR" id="htmlRoot">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="Karina Drvale">
+<title>Episódio Emocional · Karina Drvale</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#FAF6EF;--ink:#3A3530;--ink-light:#7A726A;
+  --rose:#F0B8B0;--rose-soft:#FAE8E5;--rose-deep:#D4897E;
+  --yellow:#F5E4A0;--yellow-soft:#FBF5DC;--yellow-deep:#C9A82C;
+  --blue:#B8D4E8;--blue-soft:#E5F0F8;--blue-deep:#5A8FAA;
+  --purple:#C8BCED;--purple-soft:#EDE9F8;--purple-deep:#7A65BB;
+  --orange:#F5C8A0;--orange-soft:#FBF0E5;--orange-deep:#C07840;
+  --green:#B8DEC5;--green-soft:#E5F5EB;--green-deep:#4A9068;
+  --teal:#A8D5CF;--teal-soft:#E0F5F2;--teal-deep:#3A8A80;
+  --red-soft:#FFF0F0;--red-deep:#C05050;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(ellipse at 10% 20%,rgba(240,184,176,.18) 0%,transparent 50%),radial-gradient(ellipse at 90% 80%,rgba(200,188,237,.15) 0%,transparent 50%),radial-gradient(ellipse at 50% 50%,rgba(245,228,160,.10) 0%,transparent 70%);pointer-events:none;z-index:0}
+
+/* ── INTRO ── */
+#intro{position:fixed;inset:0;z-index:100;background:var(--cream);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;transition:opacity .8s ease,transform .8s ease}
+#intro.hidden{opacity:0;transform:translateY(-20px);pointer-events:none}
+.intro-petals{position:relative;width:80px;height:80px;margin:0 auto 2rem}
+.petal{position:absolute;width:28px;height:28px;border-radius:50% 50% 0 50%;opacity:.75;animation:petalFloat 4s ease-in-out infinite}
+.petal:nth-child(1){background:var(--rose);top:0;left:50%;transform:translateX(-50%)}
+.petal:nth-child(2){background:var(--yellow);top:50%;right:0;transform:translateY(-50%) rotate(90deg);animation-delay:.5s}
+.petal:nth-child(3){background:var(--purple);bottom:0;left:50%;transform:translateX(-50%) rotate(180deg);animation-delay:1s}
+.petal:nth-child(4){background:var(--blue);top:50%;left:0;transform:translateY(-50%) rotate(270deg);animation-delay:1.5s}
+.petal-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:20px;height:20px;background:var(--orange);border-radius:50%}
+@keyframes petalFloat{0%,100%{opacity:.75}50%{opacity:1}}
+.intro-title{font-family:'Fraunces',serif;font-size:clamp(2rem,5vw,3rem);font-weight:300;line-height:1.2;margin-bottom:1rem}
+.intro-title em{font-style:italic;color:var(--rose-deep)}
+.intro-sub{font-size:1rem;color:var(--ink-light);font-weight:300;max-width:360px;line-height:1.6;margin-bottom:2.5rem}
+.intro-note{font-size:.78rem;color:var(--ink-light);letter-spacing:.05em;margin-top:1.5rem;opacity:.6}
+
+/* ── PROGRESS ── */
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--rose-deep),var(--purple-deep));transition:width .6s ease;z-index:50}
+.step-counter{position:fixed;top:1rem;right:1.5rem;font-size:.75rem;color:var(--ink-light);letter-spacing:.08em;z-index:50;opacity:0;transition:opacity .4s}
+.step-counter.visible{opacity:1}
+
+/* ── APP ── */
+#app{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:4rem 1.5rem 8rem;display:none}
+.steps-wrapper{position:relative;min-height:400px}
+
+/* ── STEP TRANSITIONS ── */
+.step{opacity:0;transform:translateY(40px);pointer-events:none;position:absolute;width:100%;transition:opacity .5s ease,transform .5s ease}
+.step.active{opacity:1;transform:translateY(0);pointer-events:all;position:relative}
+.step.done{opacity:0;transform:translateY(-30px);pointer-events:none;position:absolute;height:0;overflow:hidden}
+
+/* ── TYPOGRAPHY ── */
+.step-eyebrow{font-size:.7rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.5rem;display:block}
+.step-title{font-family:'Fraunces',serif;font-size:clamp(1.6rem,4vw,2.2rem);font-weight:300;line-height:1.25;margin-bottom:.6rem;color:var(--ink)}
+.step-title em{font-style:italic;color:var(--rose-deep)}
+.step-desc{font-size:.9rem;color:var(--ink-light);line-height:1.65;margin-bottom:1.6rem;font-weight:300;max-width:480px}
+.field-label{font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-light);margin-bottom:.35rem;margin-top:1.4rem;display:block}
+.field-hint{font-size:.82rem;color:var(--ink-light);font-weight:300;line-height:1.55;margin-bottom:.7rem}
+.step-1 .step-eyebrow{color:var(--rose-deep)}
+.step-2 .step-eyebrow{color:var(--teal-deep)}
+.step-3 .step-eyebrow{color:var(--yellow-deep)}
+.step-4 .step-eyebrow{color:var(--orange-deep)}
+.step-5 .step-eyebrow{color:var(--purple-deep)}
+.step-6 .step-eyebrow{color:var(--rose-deep)}
+
+/* ── INPUTS ── */
+textarea,input[type=text]{width:100%;background:rgba(255,255,255,.7);border:1.5px solid rgba(0,0,0,.1);border-radius:16px;padding:1rem 1.2rem;font-family:'DM Sans',sans-serif;font-size:.93rem;font-weight:300;color:var(--ink);resize:none;outline:none;transition:border-color .25s,box-shadow .25s;line-height:1.65}
+textarea:focus,input:focus{border-color:rgba(0,0,0,.25);box-shadow:0 0 0 3px rgba(0,0,0,.04)}
+textarea::placeholder,input::placeholder{color:rgba(58,53,48,.3);font-style:italic}
+textarea{min-height:96px}
+.char-count{font-size:.7rem;color:var(--ink-light);text-align:right;margin-top:.3rem;opacity:.5}
+.char-warn{color:var(--orange-deep)!important;opacity:1!important;font-weight:500}
+
+/* ── BUTTONS ── */
+.btn-row{display:flex;align-items:center;gap:.8rem;margin-top:1.8rem;flex-wrap:wrap}
+.btn-start{background:var(--ink);color:var(--cream);border:none;padding:.85rem 2.5rem;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:500;cursor:pointer;letter-spacing:.03em;transition:all .25s}
+.btn-start:hover{background:#5a3e30;transform:translateY(-1px)}
+.btn-next{display:inline-flex;align-items:center;gap:.5rem;background:var(--ink);color:var(--cream);border:1.5px solid var(--ink);padding:.75rem 1.8rem;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:500;cursor:pointer;letter-spacing:.03em;transition:all .25s}
+.btn-next:hover{background:#5a3e30;border-color:#5a3e30}
+.btn-next svg,.btn-back svg{transition:transform .2s}
+.btn-next:hover svg{transform:translateX(3px)}
+.btn-back{display:inline-flex;align-items:center;gap:.5rem;background:transparent;color:var(--ink-light);border:1.5px solid rgba(0,0,0,.12);padding:.72rem 1.4rem;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:400;cursor:pointer;letter-spacing:.03em;transition:all .25s}
+.btn-back:hover{border-color:var(--ink);color:var(--ink)}
+.btn-back:hover svg{transform:translateX(-3px)}
+.btn-finish{background:var(--rose-deep);border-color:var(--rose-deep)}
+.btn-finish:hover{background:#b5695e;border-color:#b5695e}
+.btn-restart{background:transparent;color:var(--ink-light);border:1px solid rgba(0,0,0,.12);padding:.6rem 1.6rem;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:.82rem;cursor:pointer;transition:all .25s;margin-top:1rem}
+.btn-restart:hover{border-color:var(--ink);color:var(--ink)}
+
+/* ── PATTERN CHIPS ── */
+.pattern-examples{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1rem}
+.pattern-chip{padding:.65rem 1rem;border-radius:14px;font-size:.82rem;font-weight:300;cursor:pointer;border:1.5px solid rgba(0,0,0,.1);background:rgba(255,255,255,.6);color:var(--ink-light);transition:all .22s;user-select:none;line-height:1.5;text-align:left}
+.pattern-chip:hover{border-color:rgba(58,53,48,.25);color:var(--ink)}
+.pattern-chip.sel{background:var(--teal-soft);border-color:var(--teal-deep);color:var(--teal-deep)}
+.pattern-chip.sel::before{content:'✓ ';font-weight:600}
+
+/* ── PRIMARY EMOTIONS ── */
+.primary-emotions{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:1rem}
+.primary-chip{padding:.55rem 1.1rem;border-radius:100px;font-size:.88rem;font-weight:500;cursor:pointer;border:2px solid rgba(0,0,0,.1);background:rgba(255,255,255,.7);color:var(--ink-light);transition:all .22s;user-select:none;display:inline-flex;align-items:center;gap:.35rem}
+.primary-chip:hover{border-color:rgba(0,0,0,.2);color:var(--ink)}
+.primary-chip[data-e="Alegria"].sel{background:#C9A82C;color:#fff;border-color:#C9A82C}
+.primary-chip[data-e="Medo"].sel{background:#5A8FAA;color:#fff;border-color:#5A8FAA}
+.primary-chip[data-e="Tristeza"].sel{background:#7A65BB;color:#fff;border-color:#7A65BB}
+.primary-chip[data-e="Raiva"].sel{background:#D4897E;color:#fff;border-color:#D4897E}
+.primary-chip[data-e="Nojo"].sel{background:#4A9068;color:#fff;border-color:#4A9068}
+.primary-chip[data-e="Surpresa"].sel{background:#C07840;color:#fff;border-color:#C07840}
+.branch-section{background:rgba(255,255,255,.5);border:1.5px solid rgba(0,0,0,.08);border-radius:18px;padding:1rem 1.2rem;margin-bottom:1rem;animation:fadeSlide .3s ease}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.branch-title{font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-light);margin-bottom:.7rem}
+.branch-chips{display:flex;flex-wrap:wrap;gap:.4rem}
+.b-chip{padding:.32rem .85rem;border-radius:100px;font-size:.79rem;cursor:pointer;border:1.5px solid rgba(0,0,0,.1);background:transparent;color:var(--ink-light);transition:all .18s;user-select:none}
+.b-chip:hover{border-color:rgba(0,0,0,.22);color:var(--ink)}
+.b-chip.sel{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+
+/* ── SLIDER ── */
+.slider-wrap{margin-top:1.4rem;background:rgba(255,255,255,.5);border:1.5px solid rgba(0,0,0,.08);border-radius:18px;padding:1.1rem 1.4rem}
+.slider-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.8rem}
+.slider-lbl{font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-light)}
+.slider-val{font-family:'Fraunces',serif;font-size:1.8rem;font-weight:300;color:var(--ink);line-height:1}
+.slider-ends{display:flex;justify-content:space-between;font-size:.72rem;color:var(--ink-light);margin-top:.5rem}
+input[type=range]{-webkit-appearance:none;width:100%;height:4px;background:rgba(0,0,0,.08);border-radius:100px;outline:none;cursor:pointer;border:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--ink);box-shadow:0 2px 8px rgba(0,0,0,.18);transition:transform .15s}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.2)}
+
+/* ── ACTION CARDS ── */
+.action-type-row{display:flex;gap:.8rem;margin-top:.8rem;flex-wrap:wrap}
+.action-card{flex:1;min-width:140px;padding:1rem 1.1rem;border-radius:16px;border:2px solid rgba(0,0,0,.1);background:rgba(255,255,255,.6);cursor:pointer;transition:all .22s;text-align:center}
+.action-card:hover{border-color:rgba(0,0,0,.22)}
+.action-card.sel-con{background:var(--green-soft);border-color:var(--green-deep)}
+.action-card.sel-des{background:var(--red-soft);border-color:var(--red-deep)}
+.action-card-icon{font-size:1.4rem;margin-bottom:.3rem}
+.action-card-title{font-size:.88rem;font-weight:500;color:var(--ink);margin-bottom:.2rem}
+.action-card-hint{font-size:.74rem;color:var(--ink-light);line-height:1.4;font-weight:300}
+
+/* ── REFLECTION ── */
+.refl-block{background:rgba(255,255,255,.5);border:1.5px solid var(--purple);border-radius:16px;padding:1rem 1.2rem;margin-bottom:.75rem}
+.refl-q{font-family:'Fraunces',serif;font-style:italic;font-size:.97rem;color:var(--purple-deep);font-weight:300;margin-bottom:.22rem}
+.refl-hint{font-size:.78rem;color:var(--ink-light);line-height:1.5}
+
+/* ── INSIGHT ── */
+.insight-deco{display:flex;align-items:center;gap:.5rem;margin-bottom:1rem}
+.insight-line{flex:1;height:1px}
+.insight-line:first-child{background:linear-gradient(90deg,transparent,var(--rose))}
+.insight-line:last-child{background:linear-gradient(90deg,var(--rose),transparent)}
+.insight-star{font-size:1.2rem;color:var(--rose-deep)}
+
+/* ── COMPLETION ── */
+#completion{display:none;animation:fadeUp .8s ease}
+#completion.visible{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.compl-header{text-align:center;padding:2rem 0 1.5rem}
+.compl-title{font-family:'Fraunces',serif;font-size:clamp(1.8rem,4vw,2.5rem);font-weight:300;color:var(--ink);margin-bottom:.8rem}
+.compl-title em{font-style:italic;color:var(--rose-deep)}
+.compl-sub{font-size:.93rem;color:var(--ink-light);font-weight:300;line-height:1.65;max-width:400px;margin:0 auto 1.5rem}
+
+/* ── SUMMARY CARDS ── */
+.s-card{
+  background:rgba(255,255,255,.7);
+  border:1.5px solid rgba(0,0,0,.07);
+  border-radius:18px;
+  padding:1.1rem 1.3rem 1.1rem 1.3rem;
+  margin-bottom:.65rem;
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+  transition:transform .2s,box-shadow .2s,border-color .2s;
+  box-shadow:0 1px 4px rgba(0,0,0,.03);
+}
+.s-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 18px rgba(0,0,0,.07);
+  border-color:rgba(0,0,0,.13);
+}
+.s-card:hover .s-card-expand{opacity:1}
+.s-card-label{
+  font-size:.65rem;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  color:var(--ink-light);
+  margin-bottom:.3rem;
+  font-weight:600;
+}
+.s-card-val{
+  font-size:.9rem;
+  color:var(--ink);
+  line-height:1.55;
+  font-weight:300;
+  display:-webkit-box;
+  -webkit-line-clamp:3;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+  word-break:break-word;
+}
+/* gradiente de fade no fundo do card quando texto é longo */
+.s-card::after{
+  content:'';
+  position:absolute;
+  left:0;right:0;bottom:0;
+  height:28px;
+  background:linear-gradient(transparent,rgba(255,255,255,.85));
+  pointer-events:none;
+  border-radius:0 0 16px 16px;
+  opacity:0;
+  transition:opacity .2s;
+}
+.s-card.is-clamped::after{opacity:1}
+/* ícone expandir */
+.s-card-expand{
+  position:absolute;
+  bottom:.6rem;
+  right:.85rem;
+  font-size:.72rem;
+  font-weight:500;
+  color:var(--ink-light);
+  letter-spacing:.04em;
+  opacity:0;
+  transition:opacity .2s;
+  pointer-events:none;
+  background:rgba(255,255,255,.95);
+  padding:.15rem .5rem;
+  border-radius:100px;
+  border:1px solid rgba(0,0,0,.08);
+}
+
+/* ── MODAL ── */
+.modal-overlay{
+  position:fixed;inset:0;
+  background:rgba(28,18,10,.6);
+  backdrop-filter:blur(7px);
+  -webkit-backdrop-filter:blur(7px);
+  z-index:500;
+  display:flex;align-items:center;justify-content:center;
+  padding:1.5rem;
+  opacity:0;visibility:hidden;
+  transition:opacity .28s ease,visibility .28s ease;
+}
+.modal-overlay.active{opacity:1;visibility:visible}
+.modal-box{
+  background:var(--cream);
+  max-width:520px;width:100%;
+  max-height:82vh;
+  border-radius:26px;
+  box-shadow:0 32px 64px rgba(0,0,0,.22);
+  display:flex;flex-direction:column;
+  transform:translateY(18px) scale(.97);
+  transition:transform .3s cubic-bezier(.2,.9,.3,1),opacity .3s ease;
+  opacity:0;
+  overflow:hidden;
+}
+.modal-overlay.active .modal-box{transform:translateY(0) scale(1);opacity:1}
+.modal-box-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.25rem 1.5rem .9rem;
+  border-bottom:1px solid rgba(0,0,0,.06);
+  flex-shrink:0;
+}
+.modal-box-title{
+  font-family:'Fraunces',serif;
+  font-size:1.1rem;font-weight:300;font-style:italic;
+  color:var(--rose-deep);
+  margin:0;line-height:1.3;
+}
+.modal-box-close{
+  width:32px;height:32px;border-radius:50%;
+  background:rgba(0,0,0,.06);border:none;cursor:pointer;
+  font-size:1rem;display:flex;align-items:center;justify-content:center;
+  color:var(--ink-light);transition:background .2s,color .2s;flex-shrink:0;
+}
+.modal-box-close:hover{background:rgba(0,0,0,.12);color:var(--ink)}
+.modal-box-label{
+  font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;
+  font-weight:700;color:var(--ink-light);
+  margin-bottom:.25rem;
+}
+.modal-box-body{
+  padding:1.3rem 1.5rem 1.8rem;
+  overflow-y:auto;flex:1;
+}
+.modal-box-text{
+  font-size:.97rem;color:var(--ink);
+  line-height:1.72;font-weight:300;
+  white-space:pre-wrap;word-break:break-word;
+  margin:0;
+}
+
+/* ── SVG EXPANDABLE NODES ── */
+#mmSvg .mm-node{cursor:pointer}
+#mmSvg .mm-node .node-hit{fill:transparent;stroke:none}
+#mmSvg .mm-node .node-hover{opacity:0;transition:opacity .18s}
+#mmSvg .mm-node:hover .node-hover{opacity:1}
+#mmSvg .mm-node.active-node .node-hover{opacity:1}
+#mmSvg .mm-node .expand-pip{opacity:0;transition:opacity .18s}
+#mmSvg .mm-node:hover .expand-pip{opacity:1}
+#mmSvg .mm-node.active-node .expand-pip{opacity:1}
+
+/* ── MIND MAP ── */
+.mm-wrap{margin-top:3rem;margin-left:-1.5rem;margin-right:-1.5rem}
+.mm-header{padding:0 1.5rem 1rem}
+.mm-title{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:300;color:var(--ink);margin-bottom:.25rem}
+.mm-sub{font-size:.82rem;color:var(--ink-light);font-weight:300;line-height:1.55}
+.mm-outer{background:var(--cream);border-radius:20px;border:1px solid rgba(0,0,0,.07);overflow:hidden;padding:1.2rem 2rem}
+#mmSvg{display:block;width:100%;height:auto}
+
+/* ── DOWNLOAD BUTTONS ── */
+.mm-actions{display:flex;align-items:center;justify-content:center;gap:.75rem;margin-top:1.2rem;flex-wrap:wrap}
+.btn-dl{
+  display:inline-flex;align-items:center;gap:.45rem;
+  padding:.65rem 1.4rem;border-radius:100px;
+  font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:500;
+  cursor:pointer;letter-spacing:.03em;
+  border:1.5px solid;transition:all .25s;
+  white-space:nowrap;
+}
+.btn-dl-print{
+  background:transparent;color:var(--ink-light);
+  border-color:rgba(0,0,0,.14);
+}
+.btn-dl-print:hover{border-color:var(--ink);color:var(--ink);transform:translateY(-1px)}
+.btn-dl svg{flex-shrink:0}
+/* footer */
+.site-footer{text-align:center;padding:2rem 0 .5rem;font-size:.72rem;color:var(--ink-light);opacity:.45;letter-spacing:.04em}
+.site-footer a{color:inherit;text-decoration:none}
+
+/* ── PRINT STYLES ── */
+/* ── PRINT DETAILS (oculto na tela) ── */
+#print-details{display:none}
+
+@media print{
+  body::before,
+  #intro,
+  .progress-bar,
+  .step-counter,
+  #completion .compl-header,
+  #completion #summCards,
+  #completion .mm-header,
+  #completion .mm-actions,
+  #completion>div:last-of-type,
+  .site-footer,
+  .modal-overlay
+  { display:none !important }
+
+  body{ background:#FAF6EF !important }
+  #app{ padding:0 !important;max-width:100% !important }
+  #completion{ display:block !important }
+
+  /* Página 1 — mapa */
+  .mm-wrap{
+    margin:0 !important;
+    padding:.4cm !important;
+  }
+  .mm-outer{
+    border:none !important;
+    padding:0 !important;
+    border-radius:0 !important;
+  }
+  #mmSvg{ width:100% !important;height:auto !important }
+
+  /* Página 2+ — detalhes */
+  #print-details{
+    display:block !important;
+    page-break-before:always;
+    font-family:'DM Sans',sans-serif;
+    background:#FAF6EF;
+    padding:.6cm .8cm;
+    color:#3A3530;
+  }
+  #print-details .pd-header{
+    text-align:center;
+    margin-bottom:.5cm;
+    padding-bottom:.3cm;
+    border-bottom:1.5px solid rgba(212,137,126,.35);
+  }
+  #print-details .pd-title{
+    font-family:'Fraunces',serif;
+    font-size:18pt;
+    font-weight:300;
+    font-style:italic;
+    color:#D4897E;
+    margin:0 0 4pt;
+  }
+  #print-details .pd-sub{
+    font-size:8pt;
+    color:#7A726A;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+  }
+  #print-details .pd-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:.3cm .45cm;
+  }
+  #print-details .pd-item{
+    background:#fff;
+    border-radius:8pt;
+    padding:.25cm .3cm;
+    border-left:3pt solid #D4897E;
+    break-inside:avoid;
+  }
+  #print-details .pd-item.full-width{
+    grid-column:1 / -1;
+  }
+  #print-details .pd-label{
+    font-size:7pt;
+    font-weight:700;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:#7A726A;
+    margin-bottom:3pt;
+  }
+  #print-details .pd-value{
+    font-size:9.5pt;
+    font-weight:300;
+    line-height:1.55;
+    color:#3A3530;
+    white-space:pre-wrap;
+    word-break:break-word;
+  }
+  #print-details .pd-divider{
+    grid-column:1 / -1;
+    height:1px;
+    background:rgba(212,137,126,.2);
+    margin:.1cm 0;
+  }
+  #print-details .pd-footer{
+    grid-column:1 / -1;
+    text-align:center;
+    font-size:7pt;
+    color:#7A726A;
+    opacity:.55;
+    margin-top:.3cm;
+    letter-spacing:.05em;
+  }
+
+  @page{ size:landscape;margin:.8cm }
+  #langBtn{ display:none !important }
+}
+
+/* ── LANGUAGE BUTTON ── */
+#langBtn{
+  position:fixed;
+  top:.85rem;
+  right:1.5rem;
+  z-index:200;
+  display:flex;
+  align-items:center;
+  gap:.35rem;
+  background:rgba(250,246,239,.88);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  border:1.5px solid rgba(0,0,0,.1);
+  border-radius:100px;
+  padding:.38rem .85rem .38rem .65rem;
+  font-family:'DM Sans',sans-serif;
+  font-size:.72rem;
+  font-weight:500;
+  letter-spacing:.07em;
+  color:var(--ink-light);
+  cursor:pointer;
+  box-shadow:0 2px 10px rgba(0,0,0,.07);
+  transition:all .2s;
+  white-space:nowrap;
+}
+#langBtn:hover{
+  border-color:rgba(0,0,0,.2);
+  color:var(--ink);
+  box-shadow:0 4px 14px rgba(0,0,0,.10);
+  transform:translateY(-1px);
+}
+#langBtn .lang-flag{font-size:.95rem;line-height:1}
+#langBtn .lang-code{font-size:.66rem;opacity:.65;font-weight:600}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar" style="width:0%"></div>
+<div class="step-counter" id="stepCounter"></div>
+
+<!-- ══ LANGUAGE BUTTON ══ -->
+<button id="langBtn" onclick="toggleLang()" title="Cambiar idioma / Mudar idioma">
+  <span class="lang-flag" id="langFlag">🇧🇷🦙</span>
+  <span class="lang-code" id="langCode">PT</span>
+</button>
+
+<!-- ══ INTRO ══ -->
+<div id="intro">
+  <div class="intro-petals">
+    <div class="petal"></div><div class="petal"></div>
+    <div class="petal"></div><div class="petal"></div>
+    <div class="petal-center"></div>
+  </div>
+  <h1 class="intro-title" data-i18n="introTitle">Episódio<br><em>Emocional</em></h1>
+  <p class="intro-sub" data-i18n="introSub">Um espaço seguro para explorar o que você sente, compreender seus padrões e encontrar novas perspectivas sobre o que aconteceu.</p>
+  <button class="btn-start" onclick="startJourney()" data-i18n="introBtn">Começar minha jornada</button>
+  <p class="intro-note" data-i18n="introNote">Privado · Apenas para você · Sem julgamentos</p>
+</div>
+
+<!-- ══ APP ══ -->
+<div id="app">
+ <div class="steps-wrapper" id="stepsWrapper">
+
+  <!-- ETAPA 1 -->
+  <div class="step step-1 active" id="step1">
+    <span class="step-eyebrow" data-i18n="step1Eyebrow">Etapa 1 · Situação</span>
+    <h2 class="step-title" data-i18n="step1Title">O que aconteceu?</h2>
+    <p class="step-desc" data-i18n="step1Desc">Vamos construir o contexto: o estado em que você estava antes e o que de fato ocorreu.</p>
+    <span class="field-label" data-i18n="step1CondLabel">Condição Anterior</span>
+    <p class="field-hint" data-i18n="step1CondHint">O contexto que moldou como você entrou nesse episódio — pode ser físico (fome, cansaço), emocional (dia estressante) ou uma intenção prévia.</p>
+    <textarea id="s1-cond" rows="3" data-i18n-placeholder="step1CondPH" placeholder="Ex: Estava cansada após uma semana intensa, mal havia dormido..." oninput="uchar('s1-cond','cc1',0)"></textarea>
+    <div class="char-count" id="cc1"></div>
+    <span class="field-label" style="margin-top:1.5rem" data-i18n="step1EvtLabel">Evento</span>
+    <p class="field-hint" data-i18n="step1EvtHint">Descreva o que aconteceu de forma objetiva — curto e direto, como um "tweet". Apenas fatos, sem interpretações.</p>
+    <textarea id="s1-evt" rows="2" maxlength="200" style="min-height:78px" data-i18n-placeholder="step1EvtPH" placeholder="Ex: Recebi uma mensagem fria do meu chefe pedindo uma reunião urgente." oninput="uchar('s1-evt','cc2',200)"></textarea>
+    <div class="char-count" id="cc2"></div>
+
+    <div class="btn-row">
+      <button class="btn-next" onclick="goNext(1)" data-i18n="btnNext">Continuar <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
+  </div>
+
+  <!-- ETAPA 2 -->
+  <div class="step step-2" id="step2">
+    <span class="step-eyebrow" data-i18n="step2Eyebrow">Etapa 2 · Padrão Automático</span>
+    <h2 class="step-title" data-i18n="step2Title">Você já viveu<br><em>isso antes?</em></h2>
+    <p class="step-desc" data-i18n="step2Desc">Antes de sentir a emoção, existe uma camada invisível: seus padrões automáticos. São respostas aprendidas ao longo da vida que moldam como você percebe e reage a certas situações.</p>
+    <span class="field-label" data-i18n="step2PatternLabel">Base de dados emocional-comportamental</span>
+    <p class="field-hint" data-i18n="step2PatternHint">Como você costuma reagir a este tipo de situação? Existe algum padrão que se repete? Selecione os que se identificar ou escreva o seu.</p>
+    <div class="pattern-examples" id="patternChips">
+      <div class="pattern-chip" data-i18n-chip="chip1" onclick="togPattern(this)">Sempre que me sinto injustiçada, fico com raiva.</div>
+      <div class="pattern-chip" data-i18n-chip="chip2" onclick="togPattern(this)">Sempre que me sinto triste, me isolo.</div>
+      <div class="pattern-chip" data-i18n-chip="chip3" onclick="togPattern(this)">Quando me sinto rejeitada, me afasto.</div>
+      <div class="pattern-chip" data-i18n-chip="chip4" onclick="togPattern(this)">Sempre que sinto medo, fico paralisada.</div>
+      <div class="pattern-chip" data-i18n-chip="chip5" onclick="togPattern(this)">Quando me sinto sobrecarregada, me fecho.</div>
+      <div class="pattern-chip" data-i18n-chip="chip6" onclick="togPattern(this)">Quando sinto que falhei, me culpo em excesso.</div>
+      <div class="pattern-chip" data-i18n-chip="chip7" onclick="togPattern(this)">Diante de conflito, evito confronto a qualquer custo.</div>
+    </div>
+    <span class="field-label" style="margin-top:.6rem" data-i18n="step2CustomLabel">Ou descreva seu próprio padrão</span>
+    <textarea id="s2-pattern" rows="2" style="min-height:76px" data-i18n-placeholder="step2CustomPH" placeholder="Ex: Sempre que me sinto ignorada, fico ruminando..." oninput="uchar('s2-pattern','cc3',0)"></textarea>
+    <div class="char-count" id="cc3"></div>
+
+    <span class="field-label" style="margin-top:1.8rem" data-i18n="step2TrigLabel">Gatilho</span>
+    <p class="field-hint" data-i18n="step2TrigHint">O gatilho não é o que aconteceu — é o que aquilo <em style="font-style:italic;color:var(--ink)">tocou</em> dentro de você. É o significado imediato que você atribuiu ao evento: o medo que ele ativou, a memória que ele despertou ou a crença que ele confirmou.<br><br>
+Pergunte a si mesma: <em style="font-style:italic;color:var(--ink)">"O que esse evento significou para mim no primeiro instante? O que eu senti que estava em risco ou em jogo?"</em><br><br>
+<span style="font-size:.8rem;opacity:.7">Ex: Senti que tinha feito algo errado e poderia ser punida. Ativou meu medo antigo de não ser boa o suficiente.</span></p>
+    <textarea id="s1-trig" rows="3" data-i18n-placeholder="step2TrigPH" placeholder="Ex: O evento tocou meu medo de rejeição — senti que algo importante estava ameaçado..." oninput="uchar('s1-trig','cc2b',0)"></textarea>
+    <div class="char-count" id="cc2b"></div>
+
+    <div class="btn-row">
+      <button class="btn-back" onclick="goBack(2)" data-i18n="btnBack"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M12 7H2M6 11l-4-4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Voltar</button>
+      <button class="btn-next" onclick="goNext(2)" data-i18n="btnNext">Continuar <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
+  </div>
+
+  <!-- ETAPA 3 -->
+  <div class="step step-3" id="step3">
+    <span class="step-eyebrow" data-i18n="step3Eyebrow">Etapa 3 · Emoções &amp; Reações</span>
+    <h2 class="step-title" data-i18n="step3Title">O que você<br><em>sentiu?</em></h2>
+    <p class="step-desc" data-i18n="step3Desc">Agora vamos mapear sua experiência emocional por completo: o que sentiu, o que aconteceu no corpo e o que passou pela mente.</p>
+    <span class="field-label" data-i18n="step3PrimLabel">Emoção primária</span>
+    <p class="field-hint" data-i18n="step3PrimHint">Comece pela emoção mais central. Depois refine com as nuances que melhor descrevem o que você viveu.</p>
+    <div class="primary-emotions" id="primChips">
+      <div class="primary-chip" data-e="Alegria" data-i18n-emo="eAlegria" onclick="pickPrim(this)">😊 Alegria</div>
+      <div class="primary-chip" data-e="Medo"    data-i18n-emo="eMedo"    onclick="pickPrim(this)">😰 Medo</div>
+      <div class="primary-chip" data-e="Tristeza" data-i18n-emo="eTristeza" onclick="pickPrim(this)">😔 Tristeza</div>
+      <div class="primary-chip" data-e="Raiva"   data-i18n-emo="eRaiva"   onclick="pickPrim(this)">😠 Raiva</div>
+      <div class="primary-chip" data-e="Nojo"    data-i18n-emo="eNojo"    onclick="pickPrim(this)">🤢 Nojo</div>
+      <div class="primary-chip" data-e="Surpresa" data-i18n-emo="eSurpresa" onclick="pickPrim(this)">😲 Surpresa</div>
+    </div>
+    <div id="branchWrap" style="display:none">
+      <div class="branch-section">
+        <div class="branch-title" id="branchTitle"></div>
+        <div class="branch-chips" id="branchChips"></div>
+      </div>
+    </div>
+    <div class="slider-wrap">
+      <div class="slider-header">
+        <span class="slider-lbl" data-i18n="step3IntLabel">Intensidade</span>
+        <span class="slider-val" id="sliderVal">5</span>
+      </div>
+      <input type="range" id="s3-int" min="0" max="10" value="5" oninput="updSlider(this)">
+      <div class="slider-ends"><span data-i18n="step3IntMin">Quase nada</span><span data-i18n="step3IntMax">Muito intenso</span></div>
+    </div>
+    <span class="field-label" style="margin-top:1.8rem" data-i18n="step3BodyLabel">Mudanças Físicas</span>
+    <p class="field-hint" data-i18n="step3BodyHint">O que aconteceu no seu corpo? As emoções sempre deixam rastros físicos — coração acelerado, tensão, calor, frio na barriga, respiração alterada...</p>
+    <textarea id="s3-body" rows="3" data-i18n-placeholder="step3BodyPH" placeholder="Ex: Senti o coração disparar, frio na barriga e as mãos ficaram trêmulas." oninput="uchar('s3-body','cc4',0)"></textarea>
+    <div class="char-count" id="cc4"></div>
+    <span class="field-label" style="margin-top:1.8rem" data-i18n="step3PsiLabel">Mudanças Psicológicas</span>
+    <p class="field-hint" data-i18n="step3PsiHint">Como estava sua mente e seu estado psicológico no momento do evento?<br><br>
+<span style="font-size:.8rem;opacity:.75">Exemplos:<br>
+1 — Mente agitada e sensação de nervosismo<br>
+2 — Não conseguia pensar com clareza, tive um "branco"<br>
+3 — Pensamentos lentos, confusos ou turvos</span></p>
+    <textarea id="s3-psi" rows="3" data-i18n-placeholder="step3PsiPH" placeholder="Ex: Mente acelerada, não conseguia me concentrar..." oninput="uchar('s3-psi','cc5',0)"></textarea>
+    <div class="char-count" id="cc5"></div>
+    <div class="btn-row">
+      <button class="btn-back" onclick="goBack(3)" data-i18n="btnBack"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M12 7H2M6 11l-4-4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Voltar</button>
+      <button class="btn-next" onclick="goNext(3)" data-i18n="btnNext">Continuar <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
+  </div>
+
+  <!-- ETAPA 4 -->
+  <div class="step step-4" id="step4">
+    <span class="step-eyebrow" data-i18n="step4Eyebrow">Etapa 4 · Ações</span>
+    <h2 class="step-title" data-i18n="step4Title">Como você reagiu?</h2>
+    <p class="step-desc" data-i18n="step4Desc">O que você fez — ou deixou de fazer — em resposta à emoção? E como classificaria essa reação?</p>
+    <span class="field-label" data-i18n="step4ReactLabel">Descrição da reação</span>
+    <p class="field-hint" data-i18n="step4ReactHint">Pode ser externa (gritar, se afastar, chorar) ou interna (suprimir, ruminar, se fechar).</p>
+    <textarea id="s4-react" rows="3" data-i18n-placeholder="step4ReactPH" placeholder="Ex: Fiquei em silêncio, respondi com uma mensagem curta e passei a tarde imaginando o pior cenário." oninput="uchar('s4-react','cc6',0)"></textarea>
+    <div class="char-count" id="cc6"></div>
+    <span class="field-label" style="margin-top:1.5rem" data-i18n="step4TypeLabel">Tipo de ação</span>
+    <p class="field-hint" data-i18n="step4TypeHint">O que você fez foi uma ação construtiva ou destrutiva?</p>
+    <div class="action-type-row">
+      <div class="action-card" id="ac-con" onclick="pickAction('con')">
+        <div class="action-card-icon">🌱</div>
+        <div class="action-card-title" data-i18n="step4ConTitle">Construtiva</div>
+        <div class="action-card-hint" data-i18n="step4ConHint">Ajuda você ou a situação de forma saudável</div>
+      </div>
+      <div class="action-card" id="ac-des" onclick="pickAction('des')">
+        <div class="action-card-icon">🌪️</div>
+        <div class="action-card-title" data-i18n="step4DesTitle">Destrutiva</div>
+        <div class="action-card-hint" data-i18n="step4DesHint">Pode gerar mais conflito, dor ou consequências negativas</div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-back" onclick="goBack(4)" data-i18n="btnBack"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M12 7H2M6 11l-4-4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Voltar</button>
+      <button class="btn-next" onclick="goNext(4)" data-i18n="btnNext">Continuar <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
+  </div>
+
+  <!-- ETAPA 5 -->
+  <div class="step step-5" id="step5">
+    <span class="step-eyebrow" data-i18n="step5Eyebrow">Etapa 5 · Reestruturação</span>
+    <h2 class="step-title" data-i18n="step5Title">Um olhar<br><em>diferente</em></h2>
+    <p class="step-desc" data-i18n="step5Desc">Vamos explorar esse pensamento com curiosidade e gentileza — e entender o impacto que as suas ações tiveram.</p>
+    <div id="reflWrap" style="margin-bottom:1rem"></div>
+    <textarea id="s5-refr" rows="3" data-i18n-placeholder="step5RefrPH" placeholder="Escrevendo isso, percebo que..." oninput="uchar('s5-refr','cc7',0)"></textarea>
+    <div class="char-count" id="cc7"></div>
+    <span class="field-label" style="margin-top:1.8rem" data-i18n="step5PostLabel">Condição Posterior</span>
+    <p class="field-hint" data-i18n="step5PostHint">O resultado ou impacto das suas ações — pode ser externo (nos outros) ou interno (em você). Essa etapa revela padrões e abre espaço para aprendizado.</p>
+    <textarea id="s5-post" rows="3" data-i18n-placeholder="step5PostPH" placeholder="Ex: Fiquei de mau humor o dia todo. A reunião era sobre um projeto novo — não o que eu imaginei." oninput="uchar('s5-post','cc8',0)"></textarea>
+    <div class="char-count" id="cc8"></div>
+    <div class="btn-row">
+      <button class="btn-back" onclick="goBack(5)" data-i18n="btnBack"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M12 7H2M6 11l-4-4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Voltar</button>
+      <button class="btn-next" onclick="goNext(5)" data-i18n="btnNext">Continuar <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
+  </div>
+
+  <!-- ETAPA 6 -->
+  <div class="step step-6" id="step6">
+    <span class="step-eyebrow" data-i18n="step6Eyebrow">Etapa 6 · Insight</span>
+    <h2 class="step-title" data-i18n="step6Title">O que você<br><em>leva</em> disso?</h2>
+    <p class="step-desc" data-i18n="step6Desc">Uma frase, uma percepção, uma intenção — algo que ficou desta jornada e que você quer guardar consigo.</p>
+    <div class="insight-deco">
+      <div class="insight-line"></div>
+      <span class="insight-star">✦</span>
+      <div class="insight-line"></div>
+    </div>
+    <textarea id="s6-ins" rows="4" data-i18n-placeholder="step6InsPH" placeholder="Aprendi que minha reação faz sentido, mas também posso..." oninput="uchar('s6-ins','cc9',0)"></textarea>
+    <div class="char-count" id="cc9"></div>
+    <div class="btn-row">
+      <button class="btn-back" onclick="goBack(6)" data-i18n="btnBack"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M12 7H2M6 11l-4-4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Voltar</button>
+      <button class="btn-next btn-finish" onclick="finish()" data-i18n="btnFinish">Concluir jornada ✦</button>
+    </div>
+  </div>
+
+ </div><!-- /steps-wrapper -->
+
+ <!-- ══ COMPLETION ══ -->
+ <div id="completion">
+   <div class="compl-header">
+     <div class="intro-petals"><div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal-center"></div></div>
+     <h2 class="compl-title" data-i18n="complTitle">Você fez algo<br><em>importante</em> hoje</h2>
+     <p class="compl-sub" data-i18n="complSub">Parar, observar e nomear suas emoções é um ato de coragem e autocuidado. Aqui está o registro completo da sua jornada.</p>
+   </div>
+
+   <div id="summCards"></div>
+
+   <!-- MIND MAP -->
+   <div class="mm-wrap">
+     <div class="mm-header">
+       <h3 class="mm-title" data-i18n="mmTitle">Mapa do seu episódio emocional</h3>
+       <p class="mm-sub" data-i18n="mmSub">Visualização das conexões entre gatilho, padrão emocional e comportamento.</p>
+     </div>
+     <div class="mm-outer">
+       <svg id="mmSvg" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"></svg>
+     </div>
+   </div>
+
+   <!-- ── DETALHES PARA IMPRESSÃO (oculto na tela, visível no PDF) ── -->
+   <div id="print-details"></div>
+
+   <!-- ── SALVAR PDF ── -->
+   <div class="mm-actions">
+     <button class="btn-dl btn-dl-print" onclick="printMap()">
+       <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+         <path d="M4 5V2.5a.5.5 0 01.5-.5h6a.5.5 0 01.5.5V5M3 5h9a1.5 1.5 0 011.5 1.5v4A.5.5 0 0113 11h-2v1.5a.5.5 0 01-.5.5h-6a.5.5 0 01-.5-.5V11H2a.5.5 0 01-.5-.5v-4A1.5 1.5 0 013 5z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+       </svg>
+       <span data-i18n="btnPrint">Imprimir / Salvar PDF</span>
+     </button>
+   </div>
+
+   <div style="text-align:center;margin-top:2rem">
+     <button class="btn-restart" onclick="location.reload()" data-i18n="btnRestart">Iniciar nova jornada</button>
+   </div>
+   <footer class="site-footer" data-i18n="footer">Criado por <a href="https://github.com/karinadrvale-cmd">Karina Drvale</a></footer>
+ </div>
+
+</div><!-- /app -->
+
+<!-- ══ MODAL ══ -->
+<div id="cardModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-box" id="modalBox">
+    <div class="modal-box-header">
+      <div>
+        <div class="modal-box-label" id="modalLabel"></div>
+        <h3 class="modal-box-title" id="modalTitle"></h3>
+      </div>
+      <button class="modal-box-close" onclick="closeModal()" data-i18n-aria-label="modalClose" aria-label="Fechar">✕</button>
+    </div>
+    <div class="modal-box-body">
+      <p class="modal-box-text" id="modalText"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══ DATA ══
+const BRANCHES_DATA = {
+  pt: {
+    Alegria:  ['Contentamento','Prazer','Alívio','Diversão','Orgulho','Êxtase','Gratidão','Encantamento','Satisfação','Bem-estar','Esperança','Amor'],
+    Medo:     ['Ansiedade','Nervosismo','Preocupação','Apreensão','Insegurança','Pânico','Terror','Alarme','Timidez','Vulnerabilidade'],
+    Tristeza: ['Desânimo','Solidão','Decepção','Melancolia','Desesperança','Luto','Abatimento','Desvalorização','Saudade','Culpa'],
+    Raiva:    ['Irritação','Frustração','Indignação','Ressentimento','Hostilidade','Ódio','Fúria','Revolta','Impaciência','Amargura'],
+    Nojo:     ['Repulsa','Aversão','Desprezo','Desdém','Rejeição','Antipatia','Repugnância'],
+    Surpresa: ['Espanto','Admiração','Deslumbramento','Confusão','Perplexidade','Fascínio'],
+  },
+  es: {
+    Alegria:  ['Satisfacción','Placer','Alivio','Diversión','Orgullo','Éxtasis','Gratitud','Encantamiento','Bienestar','Esperanza','Amor','Gozo'],
+    Medo:     ['Ansiedad','Nerviosismo','Preocupación','Aprensión','Inseguridad','Pánico','Terror','Alarma','Timidez','Vulnerabilidad'],
+    Tristeza: ['Desánimo','Soledad','Decepción','Melancolía','Desesperanza','Duelo','Abatimiento','Desvaloración','Nostalgia','Culpa'],
+    Raiva:    ['Irritación','Frustración','Indignación','Resentimiento','Hostilidad','Odio','Furia','Rabia','Impaciencia','Amargura'],
+    Nojo:     ['Repulsa','Aversión','Desprecio','Desdén','Rechazo','Antipatía','Repugnancia'],
+    Surpresa: ['Asombro','Admiración','Deslumbramiento','Confusión','Perplejidad','Fascinación'],
+  }
+};
+// BRANCHES mantido como alias para compatibilidade (sempre PT, chave canônica)
+const BRANCHES = BRANCHES_DATA.pt;
+
+// ── Helpers de tradução de nomes canônicos (PT) para o idioma atual ──
+// Emoção primária: usa T[lang]['e'+NomePT+'Name'] (ex: eSurpresaName)
+function translateEmoName(ptName){
+  if(!ptName) return ptName;
+  const t = T[currentLang] || T.pt;
+  const key = 'e' + ptName + 'Name';
+  return t[key] || ptName;
+}
+// Sub-emoção (branch): busca a posição do nome PT na lista canônica e retorna
+// o item correspondente na lista do idioma atual (listas são posicionalmente paralelas)
+function translateBranchName(ptPrimary, ptBranchName){
+  if(!ptBranchName) return ptBranchName;
+  const ptList = BRANCHES_DATA.pt[ptPrimary] || [];
+  const idx = ptList.indexOf(ptBranchName);
+  if(idx === -1) return ptBranchName;
+  const localList = (BRANCHES_DATA[currentLang] || BRANCHES_DATA.pt)[ptPrimary] || [];
+  return localList[idx] || ptBranchName;
+}
+// Traduz uma lista de nomes canônicos de branches para o idioma atual
+function translateBranchList(ptPrimary, ptBranchNames){
+  return (ptBranchNames || []).map(b => translateBranchName(ptPrimary, b));
+}
+
+let st = { prim:null, branches:[], action:null, patterns:[], cur:1 };
+const TOTAL = 6;
+
+// ══ START ══
+function startJourney(){
+  const intro = document.getElementById('intro');
+  intro.classList.add('hidden');
+  setTimeout(()=>{
+    intro.style.display='none';
+    document.getElementById('app').style.display='block';
+    document.getElementById('stepCounter').classList.add('visible');
+    updProg();
+  },800);
+}
+
+function updProg(){
+  document.getElementById('progressBar').style.width = ((st.cur-1)/TOTAL*100)+'%';
+  document.getElementById('stepCounter').textContent = st.cur+' / '+TOTAL;
+}
+
+// ══ NAVIGATION ══
+// ── Função central de navegação — única fonte de verdade ──
+// Garante que nenhum step acumule classes conflitantes ('done' + 'active').
+function showStep(n){
+  for(let i=1;i<=TOTAL;i++){
+    const el=document.getElementById('step'+i);
+    if(!el) continue;
+    // Limpa inline styles residuais de animações anteriores
+    el.style.cssText='';
+    el.classList.remove('active','done');
+    if(i<n)  el.classList.add('done');
+    if(i===n) el.classList.add('active');
+  }
+  st.cur=n;
+  updProg();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function goNext(from){
+  if(from>=TOTAL) return;
+  if(from+1===5) buildRefl();
+  showStep(from+1);
+}
+
+function goBack(from){
+  if(from<=1) return;
+  showStep(from-1);
+}
+
+// ══ PATTERNS ══
+function togPattern(el, _legacyText){
+  // Usa o texto do idioma atual para garantir consistência
+  const key = el.getAttribute('data-i18n-chip');
+  const t = T[typeof currentLang !== 'undefined' ? currentLang : 'pt'];
+  const text = (key && t && t[key]) ? t[key] : el.textContent.trim();
+
+  el.classList.toggle('sel');
+  if(el.classList.contains('sel')){
+    if(!st.patterns.includes(text)) st.patterns.push(text);
+  } else {
+    st.patterns=st.patterns.filter(p=>p!==text);
+  }
+}
+
+// ══ EMOTIONS ══
+function pickPrim(el){
+  document.querySelectorAll('.primary-chip').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+  st.prim=el.dataset.e;
+  st.branches=[];
+  document.querySelectorAll('.b-chip').forEach(c=>c.classList.remove('sel'));
+  renderBranches(st.prim);
+}
+
+function renderBranches(emo){
+  // Lista no idioma atual para exibição
+  const displayList = (BRANCHES_DATA[currentLang] || BRANCHES_DATA.pt)[emo] || [];
+  // Lista canônica PT para armazenar em st.branches (consistência no mapa)
+  const canonList   = BRANCHES_DATA.pt[emo] || [];
+  const t = T[currentLang];
+  const emoKey = 'e' + emo; // ex: "eAlegria"
+  const emoNameKey = emoKey + 'Name'; // ex: "eAlegraName" — nome sem emoji
+  const emoDisplayName = T[currentLang][emoNameKey] || T[currentLang][emoKey] || emo;
+  document.getElementById('branchTitle').textContent = t.branchTitlePrefix + emoDisplayName + '?';
+  document.getElementById('branchChips').innerHTML = displayList.map((b, i) => {
+    const canon = canonList[i] || b;
+    return `<div class="b-chip" onclick="togBranch(this,'${canon}','${b.replace(/'/g,'&#39;')}')">${b}</div>`;
+  }).join('');
+  document.getElementById('branchWrap').style.display = 'block';
+}
+
+function togBranch(el, canonName, _displayName){
+  // Sempre armazena o nome canônico PT em st.branches
+  el.classList.toggle('sel');
+  if(el.classList.contains('sel')){
+    if(!st.branches.includes(canonName)) st.branches.push(canonName);
+  } else {
+    st.branches = st.branches.filter(e => e !== canonName);
+  }
+}
+
+// ══ SLIDER ══
+function updSlider(el){
+  document.getElementById('sliderVal').textContent=el.value;
+  const pct=(el.value/10)*100;
+  el.style.background=`linear-gradient(90deg,var(--yellow-deep) ${pct}%,rgba(0,0,0,.08) ${pct}%)`;
+}
+
+// ══ ACTION ══
+function pickAction(type){
+  st.action=type;
+  document.getElementById('ac-con').className='action-card'+(type==='con'?' sel-con':'');
+  document.getElementById('ac-des').className='action-card'+(type==='des'?' sel-des':'');
+}
+
+// ══ CHAR COUNT ══
+function uchar(id,cid,limit){
+  const el=document.getElementById(id), cd=document.getElementById(cid);
+  const len=el.value.length;
+  const t=T[currentLang];
+  if(limit>0){ const r=limit-len; cd.textContent=r+t.charRestantes; cd.className='char-count'+(r<30?' char-warn':''); }
+  else { cd.textContent=len>0?len+t.charCaracteres:''; }
+}
+
+// ══ REFLECTIONS ══
+function buildRefl(){
+  const t=T[currentLang];
+  const emoLocal = translateEmoName(st.prim) || '';
+  // Em espanhol, a pergunta 2 usa sempre a frase genérica (sem nome da emoção),
+  // conforme solicitado. Em português, mantém o comportamento original com o nome traduzido.
+  const q2h = (currentLang === 'es')
+    ? t.reflH2noemo
+    : (emoLocal ? t.reflH2prefix+emoLocal.toLowerCase()+t.reflH2suffix : t.reflH2noemo);
+  const qs=[
+    {q:t.reflQ1, h:t.reflH1},
+    {q:t.reflQ2, h:q2h},
+    {q:t.reflQ3, h:t.reflH3}
+  ];
+  document.getElementById('reflWrap').innerHTML=qs.map(q=>`
+    <div class="refl-block">
+      <div class="refl-q">"${q.q}"</div>
+      <div class="refl-hint">${q.h}</div>
+    </div>`).join('');
+}
+
+// ══ MODAL ══
+function openModal(label, fullText){
+  if(!fullText || fullText==='—') return;
+  document.getElementById('modalLabel').textContent = label;
+  document.getElementById('modalTitle').textContent = label;
+  document.getElementById('modalText').textContent  = fullText;
+  document.getElementById('cardModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(){
+  document.getElementById('cardModal').classList.remove('active');
+  document.body.style.overflow = '';
+  if(typeof window._mmCloseHook === 'function') window._mmCloseHook();
+}
+document.getElementById('cardModal').addEventListener('click', e=>{
+  if(e.target === document.getElementById('cardModal')) closeModal();
+});
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape') closeModal();
+});
+
+// ══ FINISH ══
+function finish(){
+  document.getElementById('step6').classList.remove('active');
+  document.getElementById('step6').classList.add('done');
+  document.getElementById('progressBar').style.width='100%';
+  document.getElementById('stepCounter').textContent=T[currentLang].stepComplete;
+  buildSummary();
+  buildMindMap();
+  setTimeout(()=>{
+    document.getElementById('completion').classList.add('visible');
+    window.scrollTo({top:0,behavior:'smooth'});
+  },400);
+}
+
+// ══ SUMMARY CARDS ══
+function buildSummary(){
+  const t=T[currentLang];
+  const emoStr=[translateEmoName(st.prim),...translateBranchList(st.prim,st.branches)].filter(Boolean).join(', ')||'—';
+  const int=document.getElementById('s3-int').value;
+  const acLbl=st.action==='con'?t.actionCon:st.action==='des'?t.actionDes:'—';
+  const patStr=[...st.patterns, g('s2-pattern')].filter(Boolean).join(' · ')||'—';
+  const fields=[
+    {l:t.summCond,      v:g('s1-cond'),   c:'var(--rose)'},
+    {l:t.summEvt,       v:g('s1-evt'),    c:'var(--yellow-deep)'},
+    {l:t.summTrig,      v:g('s1-trig'),   c:'var(--yellow-deep)'},
+    {l:t.summPat,       v:patStr,         c:'var(--teal-deep)'},
+    {l:t.summEmo+' · '+int+'/10', v:emoStr, c:'var(--orange)'},
+    {l:t.summBody,      v:g('s3-body'),   c:'var(--orange-deep)'},
+    {l:t.summPsi,       v:g('s3-psi'),    c:'var(--blue-deep)'},
+    {l:t.summAct+' · '+acLbl, v:g('s4-react'), c:'var(--green-deep)'},
+    {l:t.summPost,      v:g('s5-post'),   c:'var(--purple-deep)'},
+    {l:t.summRefr,      v:g('s5-refr'),   c:'var(--purple)'},
+    {l:t.summIns,       v:g('s6-ins'),    c:'var(--rose-deep)'},
+  ];
+
+  document.getElementById('summCards').innerHTML = fields
+    .filter(f => f.v && f.v !== '—')
+    .map(f => `
+      <div class="s-card" style="border-left:3px solid ${f.c}" data-label="${esc(f.l)}" data-full="${esc(f.v)}">
+        <div class="s-card-label">${esc(f.l)}</div>
+        <div class="s-card-val">${esc(f.v)}</div>
+        <div class="s-card-expand">${t.summReadMore}</div>
+      </div>`
+    ).join('');
+
+  // Detectar se texto foi cortado e adicionar evento de clique
+  requestAnimationFrame(() => {
+    document.querySelectorAll('.s-card').forEach(card => {
+      const val = card.querySelector('.s-card-val');
+      if (val && val.scrollHeight > val.clientHeight + 2) {
+        card.classList.add('is-clamped');
+      }
+      card.addEventListener('click', () => {
+        const label   = card.getAttribute('data-label') || '';
+        const rawText = card.getAttribute('data-full')  || '';
+        // decode html entities
+        const tmp = document.createElement('textarea');
+        tmp.innerHTML = rawText;
+        openModal(label, tmp.value);
+      });
+    });
+  });
+}
+
+// ══════════════════════════════════════════════════════
+// ══ MIND MAP — texto sempre dentro dos nós (clipPath) ══
+// ══════════════════════════════════════════════════════
+
+// Labels do mapa por idioma
+const MM_LABELS = {
+  pt: {
+    title:       'Episódio Emocional',
+    stgL:        ['ETAPA 01','ETAPA 02','ETAPA 03','ETAPA 04','ETAPA 05'],
+    filtragemPeriodo: 'Período de filtragem seletiva · Período refratário',
+    condAnterior:'Condição Anterior',
+    evento:      'Evento',
+    gatilho:     'Gatilho',
+    basePer:     'Base de Percepção',
+    mudFisicas:  'Mudanças Físicas',
+    estadoEmo:   'Estado Emocional',
+    mudPsi:      'Mudanças Psicológicas',
+    acoesCon:    '🌱 Ações Construtivas',
+    acoesDes:    '🌪️ Ações Destrutivas',
+    condPost:    'Condição Posterior',
+    ciclo:       'Ciclo de condicionamento · feedback loop',
+    intensidade: 'Intensidade: ',
+  },
+  es: {
+    title:       'Episodio Emocional',
+    stgL:        ['PASO 01','PASO 02','PASO 03','PASO 04','PASO 05'],
+    filtragemPeriodo: 'Período de filtrado selectivo · Período refractario',
+    condAnterior:'Condición Previa',
+    evento:      'Evento',
+    gatilho:     'Desencadenante',
+    basePer:     'Base de Percepción',
+    mudFisicas:  'Cambios Físicos',
+    estadoEmo:   'Estado Emocional',
+    mudPsi:      'Cambios Psicológicos',
+    acoesCon:    '🌱 Acciones Constructivas',
+    acoesDes:    '🌪️ Acciones Destructivas',
+    condPost:    'Condición Posterior',
+    ciclo:       'Ciclo de condicionamiento · feedback loop',
+    intensidade: 'Intensidad: ',
+  }
+};
+
+function buildMindMap(){
+  const mml = MM_LABELS[currentLang] || MM_LABELS.pt; // labels do mapa no idioma atual
+  const condVal  = g('s1-cond')  || '—';
+  const evtVal   = g('s1-evt')   || '—';
+  const trigVal  = g('s1-trig')  || '—';
+  const patAll   = [...st.patterns, g('s2-pattern')].filter(Boolean);
+  const patVal   = patAll.length ? patAll.join(' · ') : '—';
+  const emoMain  = translateEmoName(st.prim) || '—';
+  const emoBr    = translateBranchList(st.prim, st.branches).join(', ');
+  const intVal   = document.getElementById('s3-int').value + '/10';
+  const bodyVal  = g('s3-body')  || '—';
+  const psiVal   = g('s3-psi')   || '—';
+  const reactVal = g('s4-react') || '—';
+  const isConstr = st.action === 'con';
+  const isDest   = st.action === 'des';
+  const postVal  = g('s5-post')  || '—';
+
+  const W = 920;
+  const c1=72, c2=218, c3=394, c4=570, c5=820;
+  const rowTop=180, rowMid=330, rowBot=480;
+  const RW=136, CIR=58;
+  const AC='#9A6040';
+
+  const COLS = {
+    COND  :{fill:'#FAE8E5',stroke:'#C8786E'},
+    EVT   :{fill:'#FBF5DC',stroke:'#A88018'},
+    BASE  :{fill:'#E0F5F2',stroke:'#2A7A70'},
+    GATI  :{fill:'#FEFAE0',stroke:'#A88018'},
+    ESTADO:{fill:'#FFF6EE',stroke:'#B86830'},
+    MF    :{fill:'#FFF2E8',stroke:'#B86830'},
+    MP    :{fill:'#EDF5FC',stroke:'#4A80A0'},
+    CON   :{fill:'#E4F5EA',stroke:'#2D8050'},
+    DES   :{fill:'#FFF0F0',stroke:'#A83030'},
+    POST  :{fill:'#EDE9F9',stroke:'#6A56B0'},
+  };
+  const stgC=['#C8786E','#A88018','#B86830','#4A80A0','#6A56B0'];
+  const stgL=mml.stgL;
+  const stgX=[c1,c2,c3,c4,c5];
+
+  // Quebra de texto respeitando largura do nó
+  function wL(text, maxLen, maxLines){
+    if(!text||text==='—') return['—'];
+    const words=text.split(' '); const lines=[]; let cur='';
+    words.forEach(w=>{
+      if((cur+' '+w).trim().length>maxLen){lines.push(cur.trim());cur=w;}
+      else{cur=(cur+' '+w).trim();}
+    });
+    if(cur) lines.push(cur.trim());
+    const out=lines.slice(0,maxLines);
+    if(lines.length>maxLines) out[maxLines-1]+='…';
+    return out;
+  }
+
+  const LH=18, PAD=50, MINH=88;
+  function dynH(lines){ return Math.max(MINH, PAD+lines.length*LH); }
+
+  const condL=wL(condVal,18,5), evtL=wL(evtVal,18,4),  baseL=wL(patVal,17,4);
+  const bodyL=wL(bodyVal,18,4), psiL=wL(psiVal,18,4),   postL=wL(postVal,18,5);
+  const conL =isConstr?wL(reactVal,18,4):['—'];
+  const desL =isDest  ?wL(reactVal,18,4):['—'];
+
+  const condH=dynH(condL), evtH=dynH(evtL), baseH=dynH(baseL);
+  const bodyH=dynH(bodyL), psiH=dynH(psiL), postH=dynH(postL);
+  const acH    = Math.max(dynH(conL),dynH(desL));
+  const acGap  = 18;
+  const acY_top = rowMid - acH/2 - acGap/2;
+  const acY_bot = rowMid + acH/2 + acGap/2;
+  const botMaxH = Math.max(baseH,psiH);
+  const fbPathY = rowBot + botMaxH/2 + 42;
+  const totalH  = fbPathY + 52;
+
+  // Contador global de clipPaths para IDs únicos
+  let clipId = 0;
+
+  let defs = '<filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="5" flood-color="rgba(50,30,10,0.07)"/></filter>';
+  let s = '';
+
+  // Fundo
+  s+=`<rect width="${W}" height="${totalH}" fill="#FAF6EF"/>`;
+  for(let gx=80;gx<W;gx+=80) for(let gy=80;gy<totalH;gy+=80) s+=`<circle cx="${gx}" cy="${gy}" r="1" fill="rgba(140,110,80,0.055)"/>`;
+
+  // Título
+  s+=`<text x="${W/2}" y="34" text-anchor="middle" font-family="Fraunces,serif" font-size="15" font-weight="300" font-style="italic" fill="#3A3530" opacity=".40">${esc(mml.title)}</text>`;
+  s+=`<line x1="${W/2-72}" y1="43" x2="${W/2+72}" y2="43" stroke="rgba(154,96,64,0.16)" stroke-width="1"/>`;
+
+  // Badges de etapa
+  stgX.forEach((cx,i)=>{
+    const pw=112,ph=24,rx=12,py=54; const px=cx-pw/2;
+    s+=`<rect x="${px+rx}" y="0" width="${pw-rx*2}" height="3" rx="1.5" fill="${stgC[i]}" opacity=".38"/>`;
+    s+=`<rect x="${px}" y="${py}" width="${pw}" height="${ph}" rx="${rx}" fill="${stgC[i]}" opacity=".09"/>`;
+    s+=`<rect x="${px}" y="${py}" width="${pw}" height="${ph}" rx="${rx}" fill="none" stroke="${stgC[i]}" stroke-width="1" opacity=".26"/>`;
+    s+=`<text x="${cx}" y="${py+16}" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9.5" font-weight="700" letter-spacing=".14em" fill="${stgC[i]}">${stgL[i]}</text>`;
+    s+=`<line x1="${cx}" y1="${py+ph}" x2="${cx}" y2="${rowTop-MINH/2-12}" stroke="${stgC[i]}" stroke-width=".7" stroke-opacity=".10" stroke-dasharray="3 4"/>`;
+  });
+
+  // Período refratário
+  const prX1=c3-CIR-44, prX2=c4+RW/2+18;
+  const prY1=rowTop-bodyH/2-26, prY2=rowBot+botMaxH/2+20;
+  s+=`<rect x="${prX1}" y="${prY1}" width="${prX2-prX1}" height="${prY2-prY1}" rx="18" fill="rgba(245,200,150,0.04)" stroke="rgba(184,104,48,0.16)" stroke-width="1.3" stroke-dasharray="7 5"/>`;
+  s+=`<text x="${(prX1+prX2)/2}" y="${prY1-8}" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9.5" font-weight="500" letter-spacing=".05em" fill="#B06030" opacity=".44">${esc(mml.filtragemPeriodo)}</text>`;
+
+  // ── NÓ RETANGULAR com clipPath garantindo texto dentro dos limites ──
+  // rnode agora aceita fullText opcional para popup
+  function rnode(cx,cy,w,col,label,lines,fullText){
+    const h=dynH(lines), x=cx-w/2, y=cy-h/2, r=13;
+    const cid='rc'+(clipId++);
+    const nid='n'+(clipId++);
+    defs+=`<clipPath id="${cid}"><rect x="${x+4}" y="${y+4}" width="${w-8}" height="${h-8}" rx="${r-2}"/></clipPath>`;
+
+    const hasFull = fullText && fullText !== '—';
+    const safeLabel = esc(label);
+    const safeFull  = hasFull ? esc(fullText) : '';
+
+    // Wrapper clicável
+    if(hasFull){
+      s+=`<g class="mm-node" id="${nid}" data-label="${safeLabel}" data-full="${safeFull}">`;
+    } else {
+      s+=`<g>`;
+    }
+
+    // Sombra + corpo
+    s+=`<rect x="${x+1}" y="${y+3}" width="${w}" height="${h}" rx="${r}" fill="rgba(50,30,10,0.045)" filter="url(#sh)"/>`;
+    s+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="${col.fill}" stroke="${col.stroke}" stroke-width="1.4"/>`;
+    // Hover overlay sutil
+    if(hasFull) s+=`<rect class="node-hover" x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="${col.stroke}" opacity=".06"/>`;
+    s+=`<rect x="${x+r}" y="${y}" width="${w-r*2}" height="3" rx="1.5" fill="${col.stroke}" opacity=".28"/>`;
+
+    // Texto clipado
+    s+=`<g clip-path="url(#${cid})">`;
+    s+=`<text x="${cx}" y="${y+19}" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9.5" font-weight="700" letter-spacing=".13em" fill="${col.stroke}">${esc(label).toUpperCase()}</text>`;
+    s+=`<line x1="${x+14}" y1="${y+26}" x2="${x+w-14}" y2="${y+26}" stroke="${col.stroke}" stroke-width=".6" stroke-opacity=".14"/>`;
+
+    const cH=lines.length*LH;
+    const aT=y+30, aB=y+h-8;
+    const sY=aT+(aB-aT-cH)/2+LH*0.78;
+    lines.forEach((l,i)=>
+      s+=`<text x="${cx}" y="${sY+i*LH}" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="13" font-weight="300" fill="#3A3530" opacity=".88">${esc(l)}</text>`
+    );
+    s+=`</g>`;
+
+    // Pip indicador de expansão (canto inferior direito)
+    if(hasFull){
+      const px=x+w-10, py2=y+h-8;
+      s+=`<g class="expand-pip">`;
+      s+=`<rect x="${px-14}" y="${py2-12}" width="22" height="14" rx="7" fill="${col.stroke}" opacity=".18"/>`;
+      s+=`<text x="${px-3}" y="${py2-1}" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="${col.stroke}" font-weight="600">↗</text>`;
+      s+=`</g>`;
+      // Hit area transparente para garantir clique em toda área
+      s+=`<rect class="node-hit" x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}"/>`;
+    }
+    s+=`</g>`;
+  }
+
+  // ── NÓ CIRCULAR com clipPath + popup ──
+  function cnode(cx,cy,r,col,lbl,main,sub,fullText){
+    const cid='cc'+(clipId++);
+    const nid='n'+(clipId++);
+    defs+=`<clipPath id="${cid}"><circle cx="${cx}" cy="${cy}" r="${r-2}"/></clipPath>`;
+
+    const hasFull = fullText && fullText !== '—';
+    const safeLabel = esc(lbl);
+    const safeFull  = hasFull ? esc(fullText) : '';
+
+    if(hasFull){
+      s+=`<g class="mm-node" id="${nid}" data-label="${safeLabel}" data-full="${safeFull}">`;
+    } else {
+      s+=`<g>`;
+    }
+
+    s+=`<circle cx="${cx}" cy="${cy}" r="${r+9}" fill="${col.fill}" opacity=".14"/>`;
+    s+=`<circle cx="${cx}" cy="${cy+3}" r="${r}" fill="rgba(50,30,10,0.045)" filter="url(#sh)"/>`;
+    s+=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="${col.fill}" stroke="${col.stroke}" stroke-width="1.7"/>`;
+    if(hasFull) s+=`<circle class="node-hover" cx="${cx}" cy="${cy}" r="${r}" fill="${col.stroke}" opacity=".06"/>`;
+    s+=`<circle cx="${cx}" cy="${cy}" r="${r-9}" fill="none" stroke="${col.stroke}" stroke-width=".6" stroke-opacity=".18" stroke-dasharray="3 3"/>`;
+
+    const hM=main&&main!=='—', hS=sub&&sub!=='';
+    s+=`<g clip-path="url(#${cid})">`;
+    if(hM&&hS){
+      s+=`<text x="${cx}" y="${cy-18}" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9.5" font-weight="700" letter-spacing=".13em" fill="${col.stroke}">${esc(lbl.toUpperCase())}</text>`;
+      s+=`<text x="${cx}" y="${cy+6}"  text-anchor="middle" font-family="Fraunces,serif" font-size="16" font-style="italic" font-weight="300" fill="#3A3530">${esc(main)}</text>`;
+      s+=`<text x="${cx}" y="${cy+23}" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#7A726A">${esc(sub)}</text>`;
+    } else if(hM){
+      s+=`<text x="${cx}" y="${cy-8}"  text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9.5" font-weight="700" letter-spacing=".13em" fill="${col.stroke}">${esc(lbl.toUpperCase())}</text>`;
+      s+=`<text x="${cx}" y="${cy+13}" text-anchor="middle" font-family="Fraunces,serif" font-size="16" font-style="italic" font-weight="300" fill="#3A3530">${esc(main)}</text>`;
+    } else {
+      s+=`<text x="${cx}" y="${cy+4}"  text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9.5" font-weight="700" letter-spacing=".13em" fill="${col.stroke}">${esc(lbl.toUpperCase())}</text>`;
+    }
+    s+=`</g>`;
+
+    if(hasFull){
+      // pip minúsculo no anel
+      s+=`<g class="expand-pip">`;
+      s+=`<circle cx="${cx+r-6}" cy="${cy-r+6}" r="7" fill="${col.stroke}" opacity=".18"/>`;
+      s+=`<text x="${cx+r-6}" y="${cy-r+10}" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" fill="${col.stroke}" font-weight="700">↗</text>`;
+      s+=`</g>`;
+      s+=`<circle class="node-hit" cx="${cx}" cy="${cy}" r="${r}"/>`;
+    }
+    s+=`</g>`;
+  }
+
+  // ── SETAS ──
+  const ASW=1.8;
+  function ah(x,y,dir){
+    const S=6;
+    if(dir==='r') s+=`<polygon points="${x},${y} ${x-S*1.5},${y-S*.55} ${x-S*1.5},${y+S*.55}" fill="${AC}" opacity=".60"/>`;
+    if(dir==='d') s+=`<polygon points="${x},${y} ${x-S*.55},${y-S*1.5} ${x+S*.55},${y-S*1.5}" fill="${AC}" opacity=".60"/>`;
+    if(dir==='u') s+=`<polygon points="${x},${y} ${x-S*.55},${y+S*1.5} ${x+S*.55},${y+S*1.5}" fill="${AC}" opacity=".60"/>`;
+  }
+  function harrow(x1,y,x2){s+=`<line x1="${x1}" y1="${y}" x2="${x2-10}" y2="${y}" stroke="${AC}" stroke-width="${ASW}" stroke-opacity=".52" stroke-linecap="round"/>`;ah(x2,y,'r');}
+  function varrow(x,y1,y2){s+=`<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2-10}" stroke="${AC}" stroke-width="${ASW-.2}" stroke-opacity=".44" stroke-linecap="round"/>`;ah(x,y2,'d');}
+  function varrowUp(x,y1,y2){s+=`<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2+10}" stroke="${AC}" stroke-width="${ASW-.2}" stroke-opacity=".44" stroke-linecap="round"/>`;ah(x,y2,'u');}
+  function forkarrow(x1,y,forkX,yTop,yBot,xEnd){
+    const le=xEnd-RW/2;
+    s+=`<line x1="${x1}" y1="${y}" x2="${forkX}" y2="${y}" stroke="${AC}" stroke-width="${ASW}" stroke-opacity=".52" stroke-linecap="round"/>`;
+    s+=`<circle cx="${forkX}" cy="${y}" r="3.5" fill="${AC}" opacity=".48"/>`;
+    const cpX=forkX+(le-forkX)*.44;
+    s+=`<path d="M ${forkX} ${y} C ${cpX} ${y} ${cpX} ${yTop} ${le} ${yTop}" fill="none" stroke="${AC}" stroke-width="${ASW-.2}" stroke-opacity=".48" stroke-linecap="round"/>`;ah(le,yTop,'r');
+    s+=`<path d="M ${forkX} ${y} C ${cpX} ${y} ${cpX} ${yBot} ${le} ${yBot}" fill="none" stroke="${AC}" stroke-width="${ASW-.2}" stroke-opacity=".48" stroke-linecap="round"/>`;ah(le,yBot,'r');
+  }
+
+  // ═══ RENDERIZAÇÃO DOS NÓS (com fullText para popup) ═══
+  rnode(c1,rowMid,RW,COLS.COND,mml.condAnterior,condL, condVal);
+  harrow(c1+RW/2,rowMid,c2-CIR);
+
+  rnode(c2,rowTop,RW,COLS.EVT,mml.evento,evtL, evtVal);
+  varrow(c2,rowTop+evtH/2,rowMid-CIR);
+  cnode(c2,rowMid,CIR,COLS.GATI,mml.gatilho,wL(trigVal,14,1)[0]||'—','', trigVal);
+  varrowUp(c2,rowBot-baseH/2,rowMid+CIR);
+  rnode(c2,rowBot,RW,COLS.BASE,mml.basePer,baseL, patVal);
+  harrow(c2+CIR,rowMid,c3-CIR);
+
+  rnode(c3,rowTop,RW,COLS.MF,mml.mudFisicas,bodyL, bodyVal);
+  varrow(c3,rowTop+bodyH/2,rowMid-CIR);
+  const emoFullText = [emoMain, emoBr ? '('+emoBr+')' : '', mml.intensidade+intVal].filter(Boolean).join(' ');
+  cnode(c3,rowMid,CIR,COLS.ESTADO,mml.estadoEmo,emoMain,intVal, emoFullText);
+  if(emoBr){const br=wL(emoBr,24,1)[0];if(br&&br!=='—')s+=`<text x="${c3}" y="${rowMid+CIR+16}" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10.5" fill="#8A7060" opacity=".60" font-style="italic">${esc(br)}</text>`;}
+  varrowUp(c3,rowBot-psiH/2,rowMid+CIR);
+  rnode(c3,rowBot,RW,COLS.MP,mml.mudPsi,psiL, psiVal);
+
+  const forkX=c3+CIR+28;
+  forkarrow(c3+CIR,rowMid,forkX,acY_top,acY_bot,c4);
+
+  rnode(c4,acY_top,RW,isConstr?COLS.CON:{fill:'rgba(255,255,255,.38)',stroke:'rgba(0,0,0,.11)'},mml.acoesCon,conL, isConstr?reactVal:'—');
+  rnode(c4,acY_bot,RW,isDest?COLS.DES:{fill:'rgba(255,255,255,.38)',stroke:'rgba(0,0,0,.11)'},mml.acoesDes,desL, isDest?reactVal:'—');
+
+  const acRX=c4+RW/2, postLX=c5-RW/2, cpD=(postLX-acRX)*.5;
+  s+=`<path d="M ${acRX} ${acY_top} C ${acRX+cpD} ${acY_top} ${postLX-cpD} ${rowMid} ${postLX} ${rowMid}" fill="none" stroke="${AC}" stroke-width="${ASW}" stroke-opacity=".48" stroke-linecap="round"/>`;
+  s+=`<path d="M ${acRX} ${acY_bot} C ${acRX+cpD} ${acY_bot} ${postLX-cpD} ${rowMid} ${postLX} ${rowMid}" fill="none" stroke="${AC}" stroke-width="${ASW}" stroke-opacity=".48" stroke-linecap="round"/>`;
+  ah(postLX,rowMid,'r');
+
+  rnode(c5,rowMid,RW,COLS.POST,mml.condPost,postL, postVal);
+
+  // Loop de feedback
+  s+=`<path d="M ${c5} ${rowMid+postH/2} L ${c5} ${fbPathY} L ${c1} ${fbPathY} L ${c1} ${rowMid+condH/2+6}" fill="none" stroke="${AC}" stroke-width="1.4" stroke-opacity=".25" stroke-dasharray="8 5" stroke-linecap="round"/>`;
+  ah(c1,rowMid+condH/2,'u');
+  const llX=(c1+c5)/2, llY=fbPathY+22;
+  s+=`<rect x="${llX-172}" y="${llY-15}" width="344" height="24" rx="12" fill="${AC}" opacity=".05"/>`;
+  s+=`<text x="${llX}" y="${llY+1}" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" font-weight="400" letter-spacing=".05em" fill="${AC}" opacity=".46">${esc(mml.ciclo)}</text>`;
+
+  // ── Compor SVG final (defs + conteúdo) ──
+  const svg = document.getElementById('mmSvg');
+  svg.setAttribute('viewBox', `0 0 ${W} ${totalH}`);
+  svg.removeAttribute('width');
+  svg.removeAttribute('height');
+  svg.innerHTML = `<defs>${defs}</defs>` + s;
+
+  // ── Event delegation nos nós do mapa ──
+  let _activeNode = null;
+  svg.addEventListener('click', e => {
+    const node = e.target.closest('.mm-node');
+    if (!node) return;
+
+    const label    = node.getAttribute('data-label') || '';
+    const fullText = node.getAttribute('data-full')   || '';
+    if (!fullText || fullText === '—') return;
+
+    // Decode entidades HTML
+    const tmp = document.createElement('textarea');
+    tmp.innerHTML = fullText;
+    const decoded = tmp.value;
+
+    // Toggle: clicar no mesmo nó fecha o modal
+    const isOpen   = document.getElementById('cardModal').classList.contains('active');
+    const isSame   = _activeNode === node;
+
+    // Remove active-node de todos
+    svg.querySelectorAll('.mm-node').forEach(n => n.classList.remove('active-node'));
+
+    if (isOpen && isSame) {
+      closeModal();
+      _activeNode = null;
+    } else {
+      node.classList.add('active-node');
+      _activeNode = node;
+      openModal(label, decoded);
+    }
+  });
+
+  // Limpar active-node quando modal fecha externamente
+  const origClose = window._origCloseModal;
+  window._mmCloseHook = () => {
+    if(svg) svg.querySelectorAll('.mm-node').forEach(n => n.classList.remove('active-node'));
+    _activeNode = null;
+  };
+}
+
+// ══ HELPERS ══
+function g(id){ return (document.getElementById(id)?.value||'').trim(); }
+function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+window.addEventListener('load',()=>{ const s=document.getElementById('s3-int'); if(s) updSlider(s); });
+
+// ══ IMPRIMIR / SALVAR PDF ══
+function printMap(){
+  buildPrintDetails();
+  window.print();
+}
+
+function buildPrintDetails(){
+  const t=T[currentLang];
+  const emoStr = [translateEmoName(st.prim), ...translateBranchList(st.prim, st.branches)].filter(Boolean).join(', ') || '—';
+  const int    = document.getElementById('s3-int').value;
+  const acLbl  = st.action === 'con' ? t.printActCon : st.action === 'des' ? t.printActDes : '—';
+  const patStr = [...st.patterns, g('s2-pattern')].filter(Boolean).join(' · ') || '—';
+
+  const sections = [
+    { group:t.printSitGroup, items:[
+      { l:t.printCondAnteriorLbl, v:g('s1-cond'), color:'#C8786E' },
+      { l:t.printEventoLbl,       v:g('s1-evt'),  color:'#A88018' },
+    ]},
+    { group:t.printPatGroup, items:[
+      { l:t.printPatLbl,  v:patStr,        color:'#2A7A70' },
+      { l:t.printGatiLbl, v:g('s1-trig'),  color:'#A88018' },
+    ]},
+    { group:t.printEmoGroup, items:[
+      { l:t.printEmoLbl+' · ' + int + '/10', v:emoStr,        color:'#B86830' },
+      { l:t.printBodyLbl,                    v:g('s3-body'),  color:'#B86830' },
+      { l:t.printPsiLbl,                     v:g('s3-psi'),   color:'#4A80A0' },
+    ]},
+    { group:t.printActGroup, items:[
+      { l:t.printActLbl+' · ' + acLbl, v:g('s4-react'), color:'#2D8050', full:true },
+    ]},
+    { group:t.printReestGroup, items:[
+      { l:t.printPostLbl, v:g('s5-post'), color:'#6A56B0' },
+      { l:t.printRefrLbl, v:g('s5-refr'), color:'#6A56B0' },
+      { l:t.printInsLbl,  v:g('s6-ins'),  color:'#C8786E', full:true },
+    ]},
+  ];
+
+  // Data de geração
+  const now   = new Date();
+  const dateStr = now.toLocaleDateString(t.pdDateLocale, {day:'2-digit',month:'long',year:'numeric'});
+
+  let html = `
+    <div class="pd-header">
+      <div class="pd-title">${t.pdTitle}</div>
+      <div class="pd-sub">${dateStr} · Karina Drvale</div>
+    </div>
+    <div class="pd-grid">`;
+
+  sections.forEach((sec, si) => {
+    // separador entre grupos (exceto no primeiro)
+    if(si > 0) html += `<div class="pd-divider"></div>`;
+
+    sec.items.forEach(item => {
+      const val = (item.v && item.v !== '—') ? escPrint(item.v) : '<span style="opacity:.35">—</span>';
+      const fw  = item.full ? ' full-width' : '';
+      html += `
+        <div class="pd-item${fw}" style="border-left-color:${item.color}">
+          <div class="pd-label">${escPrint(item.l)}</div>
+          <div class="pd-value">${val}</div>
+        </div>`;
+    });
+  });
+
+  html += `
+      <div class="pd-footer">${t.pdFooterText} ${dateStr}</div>
+    </div>`;
+
+  document.getElementById('print-details').innerHTML = html;
+}
+
+function escPrint(s){
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ══════════════════════════════════════════════════════
+// ══ INTERNACIONALIZAÇÃO (PT ↔ ES) ══
+// ══════════════════════════════════════════════════════
+const T = {
+  pt: {
+    // Meta
+    htmlLang: 'pt-BR',
+    pageTitle: 'Episódio Emocional · Karina Drvale',
+    // Botão de idioma
+    langFlag: '🇧🇷🦙',
+    langCode: 'PT',
+    // Chips de emoção primária (texto visível + nome curto para branchTitle)
+    eAlegria:  '😊 Alegria',  eAlegraName: 'Alegria',
+    eMedo:     '😰 Medo',     eMedoName:   'Medo',
+    eTristeza: '😔 Tristeza', eTristezaName:'Tristeza',
+    eRaiva:    '😠 Raiva',    eRaivaName:  'Raiva',
+    eNojo:     '🤢 Nojo',     eNojoName:   'Nojo',
+    eSurpresa: '😲 Surpresa', eSurpresaName:'Surpresa',
+    // Intro
+    introTitle: 'Episódio<br><em>Emocional</em>',
+    introSub: 'Um espaço seguro para explorar o que você sente, compreender seus padrões e encontrar novas perspectivas sobre o que aconteceu.',
+    introBtn: 'Começar minha jornada',
+    introNote: 'Privado · Apenas para você · Sem julgamentos',
+    // Step 1
+    step1Eyebrow: 'Etapa 1 · Situação',
+    step1Title: 'O que aconteceu?',
+    step1Desc: 'Vamos construir o contexto: o estado em que você estava antes e o que de fato ocorreu.',
+    step1CondLabel: 'Condição Anterior',
+    step1CondHint: 'O contexto que moldou como você entrou nesse episódio — pode ser físico (fome, cansaço), emocional (dia estressante) ou uma intenção prévia.',
+    step1CondPH: 'Ex: Estava cansada após uma semana intensa, mal havia dormido...',
+    step1EvtLabel: 'Evento',
+    step1EvtHint: 'Descreva o que aconteceu de forma objetiva — curto e direto, como um "tweet". Apenas fatos, sem interpretações.',
+    step1EvtPH: 'Ex: Recebi uma mensagem fria do meu chefe pedindo uma reunião urgente.',
+    // Step 2
+    step2Eyebrow: 'Etapa 2 · Padrão Automático',
+    step2Title: 'Você já viveu<br><em>isso antes?</em>',
+    step2Desc: 'Antes de sentir a emoção, existe uma camada invisível: seus padrões automáticos. São respostas aprendidas ao longo da vida que moldam como você percebe e reage a certas situações.',
+    step2PatternLabel: 'Base de dados emocional-comportamental',
+    step2PatternHint: 'Como você costuma reagir a este tipo de situação? Existe algum padrão que se repete? Selecione os que se identificar ou escreva o seu.',
+    step2CustomLabel: 'Ou descreva seu próprio padrão',
+    step2CustomPH: 'Ex: Sempre que me sinto ignorada, fico ruminando...',
+    step2TrigLabel: 'Gatilho',
+    step2TrigHint: 'O gatilho não é o que aconteceu — é o que aquilo <em style="font-style:italic;color:var(--ink)">tocou</em> dentro de você. É o significado imediato que você atribuiu ao evento: o medo que ele ativou, a memória que ele despertou ou a crença que ele confirmou.<br><br>Pergunte a si mesma: <em style="font-style:italic;color:var(--ink)">"O que esse evento significou para mim no primeiro instante? O que eu senti que estava em risco ou em jogo?"</em><br><br><span style="font-size:.8rem;opacity:.7">Ex: Senti que tinha feito algo errado e poderia ser punida. Ativou meu medo antigo de não ser boa o suficiente.</span>',
+    step2TrigPH: 'Ex: O evento tocou meu medo de rejeição — senti que algo importante estava ameaçado...',
+    // Pattern chips
+    chip1: 'Sempre que me sinto injustiçada, fico com raiva.',
+    chip2: 'Sempre que me sinto triste, me isolo.',
+    chip3: 'Quando me sinto rejeitada, me afasto.',
+    chip4: 'Sempre que sinto medo, fico paralisada.',
+    chip5: 'Quando me sinto sobrecarregada, me fecho.',
+    chip6: 'Quando sinto que falhei, me culpo em excesso.',
+    chip7: 'Diante de conflito, evito confronto a qualquer custo.',
+    // Step 3
+    step3Eyebrow: 'Etapa 3 · Emoções &amp; Reações',
+    step3Title: 'O que você<br><em>sentiu?</em>',
+    step3Desc: 'Agora vamos mapear sua experiência emocional por completo: o que sentiu, o que aconteceu no corpo e o que passou pela mente.',
+    step3PrimLabel: 'Emoção primária',
+    step3PrimHint: 'Comece pela emoção mais central. Depois refine com as nuances que melhor descrevem o que você viveu.',
+    step3IntLabel: 'Intensidade',
+    step3IntMin: 'Quase nada',
+    step3IntMax: 'Muito intenso',
+    step3BodyLabel: 'Mudanças Físicas',
+    step3BodyHint: 'O que aconteceu no seu corpo? As emoções sempre deixam rastros físicos — coração acelerado, tensão, calor, frio na barriga, respiração alterada...',
+    step3BodyPH: 'Ex: Senti o coração disparar, frio na barriga e as mãos ficaram trêmulas.',
+    step3PsiLabel: 'Mudanças Psicológicas',
+    step3PsiHint: 'Como estava sua mente e seu estado psicológico no momento do evento?<br><br><span style="font-size:.8rem;opacity:.75">Exemplos:<br>1 — Mente agitada e sensação de nervosismo<br>2 — Não conseguia pensar com clareza, tive um "branco"<br>3 — Pensamentos lentos, confusos ou turvos</span>',
+    step3PsiPH: 'Ex: Mente acelerada, não conseguia me concentrar...',
+    // Step 4
+    step4Eyebrow: 'Etapa 4 · Ações',
+    step4Title: 'Como você reagiu?',
+    step4Desc: 'O que você fez — ou deixou de fazer — em resposta à emoção? E como classificaria essa reação?',
+    step4ReactLabel: 'Descrição da reação',
+    step4ReactHint: 'Pode ser externa (gritar, se afastar, chorar) ou interna (suprimir, ruminar, se fechar).',
+    step4ReactPH: 'Ex: Fiquei em silêncio, respondi com uma mensagem curta e passei a tarde imaginando o pior cenário.',
+    step4TypeLabel: 'Tipo de ação',
+    step4TypeHint: 'O que você fez foi uma ação construtiva ou destrutiva?',
+    step4ConTitle: 'Construtiva',
+    step4ConHint: 'Ajuda você ou a situação de forma saudável',
+    step4DesTitle: 'Destrutiva',
+    step4DesHint: 'Pode gerar mais conflito, dor ou consequências negativas',
+    // Step 5
+    step5Eyebrow: 'Etapa 5 · Reestruturação',
+    step5Title: 'Um olhar<br><em>diferente</em>',
+    step5Desc: 'Vamos explorar esse pensamento com curiosidade e gentileza — e entender o impacto que as suas ações tiveram.',
+    step5RefrPH: 'Escrevendo isso, percebo que...',
+    step5PostLabel: 'Condição Posterior',
+    step5PostHint: 'O resultado ou impacto das suas ações — pode ser externo (nos outros) ou interno (em você). Essa etapa revela padrões e abre espaço para aprendizado.',
+    step5PostPH: 'Ex: Fiquei de mau humor o dia todo. A reunião era sobre um projeto novo — não o que eu imaginei.',
+    // Step 6
+    step6Eyebrow: 'Etapa 6 · Insight',
+    step6Title: 'O que você<br><em>leva</em> disso?',
+    step6Desc: 'Uma frase, uma percepção, uma intenção — algo que ficou desta jornada e que você quer guardar consigo.',
+    step6InsPH: 'Aprendi que minha reação faz sentido, mas também posso...',
+    // Buttons
+    btnNext: 'Continuar <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    btnBack: '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M12 7H2M6 11l-4-4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Voltar',
+    btnFinish: 'Concluir jornada ✦',
+    btnPrint: 'Imprimir / Salvar PDF',
+    btnRestart: 'Iniciar nova jornada',
+    // Completion
+    complTitle: 'Você fez algo<br><em>importante</em> hoje',
+    complSub: 'Parar, observar e nomear suas emoções é um ato de coragem e autocuidado. Aqui está o registro completo da sua jornada.',
+    mmTitle: 'Mapa do seu episódio emocional',
+    mmSub: 'Visualização das conexões entre gatilho, padrão emocional e comportamento.',
+    footer: 'Criado por <a href="https://github.com/karinadrvale-cmd">Karina Drvale</a>',
+    // Modal
+    modalClose: 'Fechar',
+    // JS dynamic strings
+    charRestantes: ' restantes',
+    charCaracteres: ' caracteres',
+    branchPrefix: 'Como você se sentiu dentro de ',
+    stepComplete: '✓ Completo',
+    actionCon: '🌱 Construtiva',
+    actionDes: '🌪️ Destrutiva',
+    summReadMore: 'ler mais ↗',
+    // Summary labels
+    summCond: 'Condição anterior',
+    summEvt: 'Evento',
+    summTrig: 'Gatilho interno',
+    summPat: 'Padrão automático',
+    summEmo: 'Emoções',
+    summBody: 'Mudanças físicas',
+    summPsi: 'Mudanças psicológicas',
+    summAct: 'Ação',
+    summPost: 'Condição posterior',
+    summRefr: 'Nova perspectiva',
+    summIns: '✦ Insight final',
+    // Print details
+    pdTitle: 'Resumo do Episódio Emocional',
+    pdDateLocale: 'pt-BR',
+    pdFooterText: 'Episódio Emocional · gerado em',
+    // Reflection questions
+    reflQ1: 'Esse pensamento é 100% verdadeiro?',
+    reflH1: 'Ou há partes que podem ser interpretações, não fatos? Existe alguma evidência que contradiga essa certeza?',
+    reflQ2: 'Existe outra forma de interpretar essa situação?',
+    reflH2prefix: 'Quando sentimos ',
+    reflH2suffix: ', nossa percepção se torna mais estreita. O que você poderia não estar vendo?',
+    reflH2noemo: 'Imagine que outra pessoa vivesse essa situação — o que ela pensaria?',
+    reflQ3: 'O que você diria a um amigo íntimo passando por isso?',
+    reflH3: 'Com a mesma gentileza e compreensão que você teria com alguém que ama.',
+    // Print section labels
+    printSitGroup: 'Situação',
+    printCondAnteriorLbl: 'Condição Anterior',
+    printEventoLbl: 'Evento',
+    printPatGroup: 'Padrão Automático',
+    printPatLbl: 'Padrão Automático',
+    printGatiLbl: 'Gatilho Interno',
+    printEmoGroup: 'Emoções & Reações',
+    printEmoLbl: 'Estado Emocional',
+    printBodyLbl: 'Mudanças Físicas',
+    printPsiLbl: 'Mudanças Psicológicas',
+    printActGroup: 'Ações',
+    printActLbl: 'Ação',
+    printActCon: 'Construtiva',
+    printActDes: 'Destrutiva',
+    printReestGroup: 'Reestruturação & Insight',
+    printPostLbl: 'Condição Posterior',
+    printRefrLbl: 'Nova Perspectiva',
+    printInsLbl: '✦ Insight Final',
+    // Emotion branch title prefix
+    branchTitlePrefix: 'Como você se sentiu dentro de ',
+  },
+  es: {
+    // Meta
+    htmlLang: 'es',
+    pageTitle: 'Episodio Emocional · Karina Drvale',
+    // Botão de idioma
+    langFlag: '🇪🇸🦙',
+    langCode: 'ES',
+    // Chips de emoção primária (texto visível + nome curto para branchTitle)
+    eAlegria:  '😊 Alegría',   eAlegraName: 'Alegría',
+    eMedo:     '😰 Miedo',     eMedoName:   'Miedo',
+    eTristeza: '😔 Tristeza',  eTristezaName:'Tristeza',
+    eRaiva:    '😠 Ira',       eRaivaName:  'Ira',
+    eNojo:     '🤢 Asco',      eNojoName:   'Asco',
+    eSurpresa: '😲 Sorpresa',  eSurpresaName:'Sorpresa',
+    // Intro
+    introTitle: 'Episodio<br><em>Emocional</em>',
+    introSub: 'Un espacio seguro para explorar lo que sientes, comprender tus patrones y encontrar nuevas perspectivas sobre lo que sucedió.',
+    introBtn: 'Comenzar mi viaje',
+    introNote: 'Privado · Solo para ti · Sin juicios',
+    // Step 1
+    step1Eyebrow: 'Paso 1 · Situación',
+    step1Title: '¿Qué ocurrió?',
+    step1Desc: 'Construyamos el contexto: el estado en que estabas antes y lo que realmente sucedió.',
+    step1CondLabel: 'Condición Anterior',
+    step1CondHint: 'El contexto que moldeó cómo entraste en este episodio — puede ser físico (hambre, cansancio), emocional (día estresante) o una intención previa.',
+    step1CondPH: 'Ej: Estaba cansada después de una semana intensa, apenas había dormido...',
+    step1EvtLabel: 'Evento',
+    step1EvtHint: 'Describe lo que ocurrió de forma objetiva — corto y directo, como un "tweet". Solo hechos, sin interpretaciones.',
+    step1EvtPH: 'Ej: Recibí un mensaje frío de mi jefe pidiendo una reunión urgente.',
+    // Step 2
+    step2Eyebrow: 'Paso 2 · Patrón Automático',
+    step2Title: '¿Ya viviste<br><em>esto antes?</em>',
+    step2Desc: 'Antes de sentir la emoción, existe una capa invisible: tus patrones automáticos. Son respuestas aprendidas a lo largo de la vida que moldean cómo percibes y reaccionas ante ciertas situaciones.',
+    step2PatternLabel: 'Base de datos emocional-conductual',
+    step2PatternHint: '¿Cómo sueles reaccionar ante este tipo de situación? ¿Existe algún patrón que se repite? Selecciona los que te identifiquen o escribe el tuyo.',
+    step2CustomLabel: 'O describe tu propio patrón',
+    step2CustomPH: 'Ej: Siempre que me siento ignorada, me quedo dando vueltas...',
+    step2TrigLabel: 'Desencadenante',
+    step2TrigHint: 'El desencadenante no es lo que ocurrió — es lo que aquello <em style="font-style:italic;color:var(--ink)">tocó</em> dentro de ti. Es el significado inmediato que le diste al evento: el miedo que activó, el recuerdo que despertó o la creencia que confirmó.<br><br>Pregúntate: <em style="font-style:italic;color:var(--ink)">"¿Qué significó este evento para mí en el primer instante? ¿Qué sentí que estaba en riesgo o en juego?"</em><br><br><span style="font-size:.8rem;opacity:.7">Ej: Sentí que había hecho algo mal y podría ser castigada. Activó mi miedo antiguo de no ser suficientemente buena.</span>',
+    step2TrigPH: 'Ej: El evento tocó mi miedo al rechazo — sentí que algo importante estaba amenazado...',
+    // Pattern chips
+    chip1: 'Siempre que me siento injustamente tratada, me enojo.',
+    chip2: 'Siempre que me siento triste, me aíslo.',
+    chip3: 'Cuando me siento rechazada, me alejo.',
+    chip4: 'Siempre que siento miedo, me paralizo.',
+    chip5: 'Cuando me siento sobrecargada, me cierro.',
+    chip6: 'Cuando siento que fallé, me culpo en exceso.',
+    chip7: 'Ante el conflicto, evito el enfrentamiento a cualquier costo.',
+    // Step 3
+    step3Eyebrow: 'Paso 3 · Emociones &amp; Reacciones',
+    step3Title: '¿Qué<br><em>sentiste?</em>',
+    step3Desc: 'Ahora vamos a mapear tu experiencia emocional por completo: lo que sentiste, lo que ocurrió en el cuerpo y lo que pasó por tu mente.',
+    step3PrimLabel: 'Emoción primaria',
+    step3PrimHint: 'Comienza por la emoción más central. Luego refina con los matices que mejor describen lo que viviste.',
+    step3IntLabel: 'Intensidad',
+    step3IntMin: 'Casi nada',
+    step3IntMax: 'Muy intenso',
+    step3BodyLabel: 'Cambios Físicos',
+    step3BodyHint: '¿Qué ocurrió en tu cuerpo? Las emociones siempre dejan rastros físicos — corazón acelerado, tensión, calor, frío en el estómago, respiración alterada...',
+    step3BodyPH: 'Ej: Sentí el corazón acelerado, frío en el estómago y las manos me temblaron.',
+    step3PsiLabel: 'Cambios Psicológicos',
+    step3PsiHint: '¿Cómo estaba tu mente y tu estado psicológico en el momento del evento?<br><br><span style="font-size:.8rem;opacity:.75">Ejemplos:<br>1 — Mente agitada y sensación de nerviosismo<br>2 — No podía pensar con claridad, me quedé en blanco<br>3 — Pensamientos lentos, confusos o turbios</span>',
+    step3PsiPH: 'Ej: Mente acelerada, no podía concentrarme...',
+    // Step 4
+    step4Eyebrow: 'Paso 4 · Acciones',
+    step4Title: '¿Cómo reaccionaste?',
+    step4Desc: '¿Qué hiciste — o dejaste de hacer — en respuesta a la emoción? ¿Y cómo clasificarías esa reacción?',
+    step4ReactLabel: 'Descripción de la reacción',
+    step4ReactHint: 'Puede ser externa (gritar, alejarte, llorar) o interna (suprimir, rumiar, cerrarte).',
+    step4ReactPH: 'Ej: Me quedé en silencio, respondí con un mensaje corto y pasé la tarde imaginando el peor escenario.',
+    step4TypeLabel: 'Tipo de acción',
+    step4TypeHint: '¿Lo que hiciste fue una acción constructiva o destructiva?',
+    step4ConTitle: 'Constructiva',
+    step4ConHint: 'Te ayuda a ti o a la situación de forma saludable',
+    step4DesTitle: 'Destructiva',
+    step4DesHint: 'Puede generar más conflicto, dolor o consecuencias negativas',
+    // Step 5
+    step5Eyebrow: 'Paso 5 · Reestructuración',
+    step5Title: 'Una mirada<br><em>diferente</em>',
+    step5Desc: 'Vamos a explorar este pensamiento con curiosidad y gentileza — y comprender el impacto que tus acciones tuvieron.',
+    step5RefrPH: 'Al escribir esto, me doy cuenta de que...',
+    step5PostLabel: 'Condición Posterior',
+    step5PostHint: 'El resultado o impacto de tus acciones — puede ser externo (en los demás) o interno (en ti). Esta etapa revela patrones y abre espacio para el aprendizaje.',
+    step5PostPH: 'Ej: Estuve de mal humor todo el día. La reunión era sobre un proyecto nuevo — no lo que imaginé.',
+    // Step 6
+    step6Eyebrow: 'Paso 6 · Insight',
+    step6Title: '¿Qué te<br><em>llevas</em> de esto?',
+    step6Desc: 'Una frase, una percepción, una intención — algo que quedó de este viaje y que quieres guardar contigo.',
+    step6InsPH: 'Aprendí que mi reacción tiene sentido, pero también puedo...',
+    // Buttons
+    btnNext: 'Continuar <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    btnBack: '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M12 7H2M6 11l-4-4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Volver',
+    btnFinish: 'Concluir viaje ✦',
+    btnPrint: 'Imprimir / Guardar PDF',
+    btnRestart: 'Iniciar nuevo viaje',
+    // Completion
+    complTitle: 'Hiciste algo<br><em>importante</em> hoy',
+    complSub: 'Detenerte, observar y nombrar tus emociones es un acto de valentía y autocuidado. Aquí está el registro completo de tu viaje.',
+    mmTitle: 'Mapa de tu episodio emocional',
+    mmSub: 'Visualización de las conexiones entre desencadenante, patrón emocional y comportamiento.',
+    footer: 'Creado por <a href="https://github.com/karinadrvale-cmd">Karina Drvale</a>',
+    // Modal
+    modalClose: 'Cerrar',
+    // JS dynamic strings
+    charRestantes: ' restantes',
+    charCaracteres: ' caracteres',
+    branchPrefix: '¿Cómo te sentiste dentro de ',
+    stepComplete: '✓ Completo',
+    actionCon: '🌱 Constructiva',
+    actionDes: '🌪️ Destructiva',
+    summReadMore: 'leer más ↗',
+    // Summary labels
+    summCond: 'Condición anterior',
+    summEvt: 'Evento',
+    summTrig: 'Desencadenante interno',
+    summPat: 'Patrón automático',
+    summEmo: 'Emociones',
+    summBody: 'Cambios físicos',
+    summPsi: 'Cambios psicológicos',
+    summAct: 'Acción',
+    summPost: 'Condición posterior',
+    summRefr: 'Nueva perspectiva',
+    summIns: '✦ Insight final',
+    // Print details
+    pdTitle: 'Resumen del Episodio Emocional',
+    pdDateLocale: 'es-ES',
+    pdFooterText: 'Episodio Emocional · generado el',
+    // Reflection questions
+    reflQ1: '¿Este pensamiento es 100% verdadero?',
+    reflH1: '¿O hay partes que pueden ser interpretaciones, no hechos? ¿Existe alguna evidencia que contradiga esa certeza?',
+    reflQ2: '¿Existe otra forma de interpretar esta situación?',
+    reflH2prefix: 'Cuando sentimos ',
+    reflH2suffix: ', nuestra percepción se vuelve más estrecha. ¿Qué podrías no estar viendo?',
+    reflH2noemo: 'Imagina que otra persona viviera esa situación: ¿qué pensaría?',
+    reflQ3: '¿Qué le dirías a un amigo íntimo que estuviera pasando por esto?',
+    reflH3: 'Con la misma gentileza y comprensión que tendrías con alguien que amas.',
+    // Print section labels
+    printSitGroup: 'Situación',
+    printCondAnteriorLbl: 'Condición Anterior',
+    printEventoLbl: 'Evento',
+    printPatGroup: 'Patrón Automático',
+    printPatLbl: 'Patrón Automático',
+    printGatiLbl: 'Desencadenante Interno',
+    printEmoGroup: 'Emociones & Reacciones',
+    printEmoLbl: 'Estado Emocional',
+    printBodyLbl: 'Cambios Físicos',
+    printPsiLbl: 'Cambios Psicológicos',
+    printActGroup: 'Acciones',
+    printActLbl: 'Acción',
+    printActCon: 'Constructiva',
+    printActDes: 'Destructiva',
+    printReestGroup: 'Reestructuración & Insight',
+    printPostLbl: 'Condición Posterior',
+    printRefrLbl: 'Nueva Perspectiva',
+    printInsLbl: '✦ Insight Final',
+    // Emotion branch title prefix
+    branchTitlePrefix: '¿Cómo te sentiste dentro de ',
+  }
+};
+
+// ── Idioma atual ──
+let currentLang = localStorage.getItem('ep_lang') || 'pt';
+
+// ── Aplica o idioma a todos os elementos da interface ──
+function applyLanguage(lang) {
+  currentLang = lang;
+  const t = T[lang];
+  if (!t) return;
+
+  // Meta
+  document.getElementById('htmlRoot').setAttribute('lang', t.htmlLang);
+  document.title = t.pageTitle;
+
+  // Botão de idioma
+  document.getElementById('langFlag').textContent = t.langFlag;
+  document.getElementById('langCode').textContent  = t.langCode;
+
+  // data-i18n → innerHTML (títulos, labels, hints, botões com HTML interno)
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key] !== undefined) el.innerHTML = t[key];
+  });
+
+  // data-i18n-placeholder → atributo placeholder
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if (t[key] !== undefined) el.placeholder = t[key];
+  });
+
+  // data-i18n-aria-label → atributo aria-label
+  document.querySelectorAll('[data-i18n-aria-label]').forEach(el => {
+    const key = el.getAttribute('data-i18n-aria-label');
+    if (t[key] !== undefined) el.setAttribute('aria-label', t[key]);
+  });
+
+  // data-i18n-emo → textContent dos chips de emoção primária (data-e preservado para CSS)
+  document.querySelectorAll('[data-i18n-emo]').forEach(el => {
+    const key = el.getAttribute('data-i18n-emo');
+    if (t[key] !== undefined) el.textContent = t[key];
+  });
+
+  // data-i18n-chip → textContent dos pattern chips (seleções preservadas por índice)
+  const chipEls = document.querySelectorAll('[data-i18n-chip]');
+  // Salva quais estavam selecionados ANTES de alterar o texto
+  const selIdx = [];
+  chipEls.forEach((el, i) => { if (el.classList.contains('sel')) selIdx.push(i); });
+  // Atualiza textos
+  chipEls.forEach((el, i) => {
+    const key = el.getAttribute('data-i18n-chip');
+    if (t[key] !== undefined) el.textContent = t[key];
+  });
+  // Re-sincroniza st.patterns com o texto do idioma atual para os selecionados
+  if (selIdx.length > 0) {
+    st.patterns = selIdx.map(i => {
+      const key = chipEls[i]?.getAttribute('data-i18n-chip');
+      return (key && t[key]) ? t[key] : (chipEls[i]?.textContent.trim() || '');
+    }).filter(Boolean);
+  }
+
+  // Se há branch aberta, re-renderiza no idioma atual preservando seleções
+  if (st.prim) {
+    const savedBranches = [...st.branches]; // nomes canônicos PT
+    renderBranches(st.prim);
+    // Restaura estado visual: re-seleciona b-chips cujo canon está em st.branches
+    document.querySelectorAll('.b-chip').forEach(chip => {
+      const m = chip.getAttribute('onclick')?.match(/'([^']+)'/);
+      const canon = m?.[1];
+      if (canon && savedBranches.includes(canon)) chip.classList.add('sel');
+    });
+    st.branches = savedBranches; // garante que st.branches não foi alterado
+  }
+
+  // Salva preferência
+  localStorage.setItem('ep_lang', lang);
+}
+
+function toggleLang() {
+  applyLanguage(currentLang === 'pt' ? 'es' : 'pt');
+}
+
+// Inicializa ao carregar
+applyLanguage(currentLang);
+
+</script>
+</body>
+</html>
